@@ -1,4 +1,3 @@
-document.body.onload = createChessBoard;
 function createChessBoard(){    
     var board = document.createElement('table');
     for(var i = 0; i < 8; i++){
@@ -18,22 +17,14 @@ function createChessBoard(){
                 row.appendChild(square);
             }else{
                 var square = document.createElement('td');
-                square.setAttribute('position', calcSquare(i, j))
+                square.setAttribute('position', calcSquare(i, j));
+                square.addEventListener("click", moveToRandomSquare);
                 square.className = "whitesquare";
-                square.addEventListener("click", function(){
-                    var piece = document.getElementById('boo');
-                    var num = Math.floor((Math.random() * 9 )+1);
-                    var attribute = 'a' + num;
-                    console.log(attribute);
-                    random_square = document.querySelectorAll('[position="attribute"]');
-                    console.log(random_square);
-                    random_square.appendChild(piece);
-                })
+                }
                 row.appendChild(square);
                 }
+                board.appendChild(row);
             }
-        board.appendChild(row);
-    }
     document.body.appendChild(board);
     
 }
@@ -44,3 +35,28 @@ function createChessBoard(){
 function calcSquare(row, column){
     return String.fromCharCode(97 + column) + row;
 }
+
+createChessBoard();
+// take in element to move to new table cell
+
+function moveToRandomSquare(){
+    var piece = document.getElementById('boo');
+    console.log(piece);
+    var els = ['a1', 'b3', 'b4', 'b9', 'g5'];
+    var num = Math.floor((Math.random() *  els.length)+1);
+    var attribute = els[num];
+    //console.log(attribute);
+    squares = document.getElementsByClassName("whitesquare");
+    //console.log(squares.legnth);
+    //console.log(squares[0]);
+    for(var i = 0; i < squares.length; i++)
+    {
+        //console.log(squares[i].getAttribute("position"));
+        if(squares[i].getAttribute("postition") == attribute){
+            console.log(squares[i].getAttribute('position'));
+            squares[i].appendChild(piece);
+        }
+    }
+}
+    //console.log(random_square);
+    //random_square.appendChild(piece);
