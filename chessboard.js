@@ -1,3 +1,4 @@
+// create chessboard
 function createChessBoard(){    
     var board = document.createElement('table');
     for(var i = 0; i < 8; i++){
@@ -41,18 +42,18 @@ createChessBoard();
 
 function moveToRandomSquare(){
     var piece = document.getElementById('boo');
-    console.log(piece);
-    var els = ['a1', 'b3', 'b4', 'b9', 'g5'];
+    //console.log(piece);
+    var els = ['b0', 'b2', 'b4', 'b6', 'b8'];
     var num = Math.floor((Math.random() *  els.length)+1);
     var attribute = els[num];
     //console.log(attribute);
     squares = document.getElementsByClassName("whitesquare");
     //console.log(squares.legnth);
-    //console.log(squares[0]);
+    console.log(squares[0]);
     for(var i = 0; i < squares.length; i++)
     {
         //console.log(squares[i].getAttribute("position"));
-        if(squares[i].getAttribute("postition") == attribute){
+        if(squares[i].getAttribute("position") == attribute){
             console.log(squares[i].getAttribute('position'));
             squares[i].appendChild(piece);
         }
