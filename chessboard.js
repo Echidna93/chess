@@ -12,6 +12,10 @@ function createChessBoard(){
                     var piece = document.createElement('div');
                     piece.className = 'rudpiece';
                     piece.id = 'boo';
+                    piece.setAttribute("isSelected", false);
+                    piece.addEventListener("click", function(){
+                        piece.setAttribute("isSelected", true)
+                    });
                     square.appendChild(piece);
                 }
                 square.className = "blacksquare";
@@ -19,7 +23,25 @@ function createChessBoard(){
             }else{
                 var square = document.createElement('td');
                 square.setAttribute('position', calcSquare(i, j));
-                square.addEventListener("click", moveToRandomSquare);
+                square.setAttribute('isSelected', false);
+                square.addEventListener("click", function(){
+                    square.setAttribute("isSelected", true);
+                });
+                square.addEventListener("click", function(){
+                    pieces = document.getElementsByClassName('rudpiece');
+                    squares = document.getElementsByClassName('whitesquare');
+                    console.log(square);
+                    for(var j = 0; j < squares.length; j++){
+                        if(squares[j].getAttribute('isSelected') == true){
+                            var target = squares[j];
+                        }                   
+                    }
+                    for(var i = 0; i < pieces.length; i++){
+                        if(pieces[i].getAttribute('isSelected') == true){
+                            target.appendChild(piece[i]);
+                            piece[i].setAttribute('isSelected', false);
+                            target.setAttribute('isSelected', false);
+                }}});
                 square.className = "whitesquare";
                 }
                 row.appendChild(square);
@@ -37,8 +59,28 @@ function calcSquare(row, column){
     return String.fromCharCode(97 + column) + row;
 }
 
+function selectPiece(piece){
+    piece.setAttribute("isSelected", true);
+}
+
 createChessBoard();
+
+function movePieceToSquare(){
+    pieces = document.getElementsByClassName('rudpiece');
+    for(var i = 0; i < pieces.length; i++){
+        if(pieces[i].getAttribute('isSelected') == true){
+            console.log(square);
+            square.appendChild(piece[i]);
+            piece[i].setAttribute('isSelected', false);
+        }
+    }
+}
+
+
 // take in element to move to new table cell
+
+
+
 
 function moveToRandomSquare(){
     var piece = document.getElementById('boo');
