@@ -6,8 +6,31 @@ function createChessBoard(){
         for(var j = 0;  j < 8; j++){
             // check parity of square
             var square = document.createElement('td');
+            //square.className = "square";
             square.setAttribute('position', calcSquare(i, j));
             square.setAttribute('isSelected', false);
+            square.addEventListener('click', function(){
+                //console.log('here');
+                //console.log(square.getAttribute('position'))
+                square.setAttribute('isSelected', true);
+            });
+            square.addEventListener("click", function(){
+                pieces = document.getElementsByClassName('rudpiece');
+                squares = document.getElementsByClassName('blacksquare');
+                //console.log(squares.length);
+                for(var j = 0; j < squares.length; j++){
+                    console.log(squares[j].getAttribute('position').concat(": ").concat(squares[j].getAttribute('isSelected')))
+                    if(squares[j].getAttribute('isSelected') == 'true'){
+                        var target = squares[j];
+                        console.log('here');
+                    }                   
+                }
+                for(var i = 0; i < pieces.length; i++){
+                    if(pieces[i].getAttribute('isSelected') == 'true'){
+                        target.appendChild(pieces[i]);
+                        pieces[i].setAttribute('isSelected', false);
+                        target.setAttribute('isSelected', false);
+            }}});
             if((j+i)%2 === 0){
                 if(square.getAttribute('position') == 'a0'){
                     var piece = document.createElement('div');
@@ -23,23 +46,8 @@ function createChessBoard(){
                 row.appendChild(square);
             }else{
                 // this always sets last square in the chessboard to be set
-                
                 // add listener to squares to select square for rudpiece to move to 
-                console.log("This is the square : ".concat(square));
-                square.addEventListener("click", function(){
-                    pieces = document.getElementsByClassName('rudpiece');
-                    squares = document.getElementsByClassName('whitesquare');
-                    for(var j = 0; j < squares.length; j++){
-                        if(squares[j].getAttribute('isSelected') == true){
-                            var target = squares[j];
-                        }                   
-                    }
-                    for(var i = 0; i < pieces.length; i++){
-                        if(pieces[i].getAttribute('isSelected') == true){
-                            target.appendChild(pieces[i]);
-                            pieces[i].setAttribute('isSelected', false);
-                            target.setAttribute('isSelected', false);
-                }}});
+
                 square.className = "whitesquare";
                 }
                 row.appendChild(square);
