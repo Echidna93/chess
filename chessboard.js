@@ -1,4 +1,22 @@
 // create chessboard
+class Stack{
+    constructor(){
+        this.items = [];
+    }
+    push(element){
+        this.items.push(element);
+    }
+    pop(){
+        if(this.items.length == 0){
+            return "underflow";
+            return this.items.pop();
+        }
+    }
+    isempty(){
+        return this.items.length == 0;
+    }
+
+}
 function createChessBoard(){    
     var board = document.createElement('table');
     for(var i = 0; i < 8; i++){
@@ -6,6 +24,7 @@ function createChessBoard(){
         for(var j = 0;  j < 8; j++){
             // check parity of square
             var square = document.createElement('td');
+
             //square.className = "square";
             //row[i][j].td = square;
             square.id = calcSquare(i, j);
@@ -27,8 +46,18 @@ function createChessBoard(){
                 
                 if(square.getAttribute('id') == 'a0'){
                     var piece = document.createElement('div');
-                    piece.className = 'rudpiece';
+                    piece.className = 'piece';
                     piece.id = 'boo';
+                    piece.setAttribute("isSelected", false);
+                    /*piece.addEventListener("click", function(){
+                        piece.setAttribute("isSelected", true)
+                    });*/
+                    square.appendChild(piece);
+                }
+                if(square.getAttribute('id') == 'a2'){
+                    var piece = document.createElement('div');
+                    piece.className = 'piece';
+                    piece.id = 'booff';
                     piece.setAttribute("isSelected", false);
                     /*piece.addEventListener("click", function(){
                         piece.setAttribute("isSelected", true)
@@ -80,49 +109,38 @@ function selectPiece(piece){
 }
 
 createChessBoard();
+stack = new Stack();
+
+function areNoPiecesSelected(){
+    var pieces = document.getElementsByClassName('piece');
+    if(pieces.length > 0){
+        return false;
+    }
+    return true;
+}
+
+function isSelected(element){
+    if(element.getAttribute('isSelected') == 'true'){
+        return true;
+    }
+    return false;
+}
 
 document.addEventListener('click', function(e){
-    var square = document.getElementById(e.target.id);
-    var piece = document.getElementsByClassName('rudpiece');
-    console.log(square.id);
-    square.appendChild(piece[0s]);
+    if(e.target.className == 'piece'){
+        e.target.id;
+        e.target.setAttribute('isSelected', true);
+    }else{
+    var pieces = this.getElementsByClassName('piece');
+    for(var i = 0; i < pieces.length; i ++){
+        if(isSelected(pieces[i])){
+            var square = document.getElementById(e.target.id);
+            square.append(pieces[i]);
+            pieces[i].setAttribute('isSelected', false);
+        }
+    }
+    //var pieces = document.getElementsByClassName('piece');
+    console.log(stack.pop());
+    //square.appendChild(pieces[0]);
+    }
 }, false);
-
-function movePieceToSquare(){
-    pieces = document.getElementsByClassName('rudpiece');
-    for(var i = 0; i < pieces.length; i++){
-        if(pieces[i].getAttribute('isSelected') == true){
-            console.log(square);
-            square.appendChild(piece[i]);
-            piece[i].setAttribute('isSelected', false);
-        }
-    }
-}
-
-
-// take in element to move to new table cell
-
-
-
-
-function moveToRandomSquare(){
-    var piece = document.getElementById('boo');
-    //console.log(piece);
-    var els = ['b0', 'b2', 'b4', 'b6', 'b8'];
-    var num = Math.floor((Math.random() *  els.length)+1);
-    var attribute = els[num];
-    //console.log(attribute);
-    squares = document.getElementsByClassName("whitesquare");
-    //console.log(squares.legnth);
-    console.log(squares[0]);
-    for(var i = 0; i < squares.length; i++)
-    {
-        //console.log(squares[i].getAttribute("position"));
-        if(squares[i].getAttribute("position") == attribute){
-            console.log(squares[i].getAttribute('position'));
-            squares[i].appendChild(piece);
-        }
-    }
-}
-    //console.log(random_square);
-    //random_square.appendChild(piece);
