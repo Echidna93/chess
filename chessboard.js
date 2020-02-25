@@ -7,49 +7,42 @@ function createChessBoard(){
             // check parity of square
             var square = document.createElement('td');
             //square.className = "square";
-            square.setAttribute('position', calcSquare(i, j));
+            //row[i][j].td = square;
+            square.id = calcSquare(i, j);
             square.setAttribute('isSelected', false);
             square.addEventListener('click', function(){
                 //console.log('here');
                 //console.log(square.getAttribute('position'))
                 square.setAttribute('isSelected', true);
             });
-            square.addEventListener("click", function(){
-                pieces = document.getElementsByClassName('rudpiece');
-                squares = document.getElementsByClassName('blacksquare');
-                //console.log(squares.length);
-                for(var j = 0; j < squares.length; j++){
-                    console.log(squares[j].getAttribute('position').concat(": ").concat(squares[j].getAttribute('isSelected')))
-                    if(squares[j].getAttribute('isSelected') == 'true'){
-                        var target = squares[j];
-                        console.log('here');
-                    }                   
-                }
+            /*
                 for(var i = 0; i < pieces.length; i++){
                     if(pieces[i].getAttribute('isSelected') == 'true'){
                         target.appendChild(pieces[i]);
                         pieces[i].setAttribute('isSelected', false);
                         target.setAttribute('isSelected', false);
             }}});
+            */
             if((j+i)%2 === 0){
-                if(square.getAttribute('position') == 'a0'){
+                
+                if(square.getAttribute('id') == 'a0'){
                     var piece = document.createElement('div');
                     piece.className = 'rudpiece';
                     piece.id = 'boo';
                     piece.setAttribute("isSelected", false);
-                    piece.addEventListener("click", function(){
+                    /*piece.addEventListener("click", function(){
                         piece.setAttribute("isSelected", true)
-                    });
+                    });*/
                     square.appendChild(piece);
                 }
+                
                 square.className = "blacksquare";
-                row.appendChild(square);
             }else{
                 // this always sets last square in the chessboard to be set
                 // add listener to squares to select square for rudpiece to move to 
 
-                square.className = "whitesquare";
-                }
+                square.className = "whitesquare";    
+            }
                 row.appendChild(square);
                 }
                 board.appendChild(row);
@@ -65,11 +58,35 @@ function calcSquare(row, column){
     return String.fromCharCode(97 + column) + row;
 }
 
+    /*square.addEventListener("click", function(){
+    pieces = document.getElementsByClassName('rudpiece');
+    squares = document.getElementsByClassName('blacksquare');
+    //console.log(squares.length);
+    for(var j = 0; j < squares.length; j++){
+        console.log(squares[j].getAttribute('id').concat(": ").concat(squares[j].getAttribute('isSelected')))
+        if(squares[j].getAttribute('isSelected') == 'true'){
+            var target = squares[j];
+            console.log('here');
+        }                   
+    }*/
+
+
+//
+//
+//
+
 function selectPiece(piece){
     piece.setAttribute("isSelected", true);
 }
 
 createChessBoard();
+
+document.addEventListener('click', function(e){
+    var square = document.getElementById(e.target.id);
+    var piece = document.getElementsByClassName('rudpiece');
+    console.log(square.id);
+    square.appendChild(piece[0s]);
+}, false);
 
 function movePieceToSquare(){
     pieces = document.getElementsByClassName('rudpiece');
