@@ -5,9 +5,10 @@ function createChessBoard(){
         var row = document.createElement('tr');
         for(var j = 0;  j < 8; j++){
             // check parity of square
+            var square = document.createElement('td');
+            square.setAttribute('position', calcSquare(i, j));
+            square.setAttribute('isSelected', false);
             if((j+i)%2 === 0){
-                var square = document.createElement('td');
-                square.setAttribute('position', calcSquare(i, j));
                 if(square.getAttribute('position') == 'a0'){
                     var piece = document.createElement('div');
                     piece.className = 'rudpiece';
@@ -21,16 +22,13 @@ function createChessBoard(){
                 square.className = "blacksquare";
                 row.appendChild(square);
             }else{
-                var square = document.createElement('td');
-                square.setAttribute('position', calcSquare(i, j));
-                square.setAttribute('isSelected', false);
-                square.addEventListener("click", function(){
-                    square.setAttribute("isSelected", true);
-                });
+                // this always sets last square in the chessboard to be set
+                
+                // add listener to squares to select square for rudpiece to move to 
+                console.log("This is the square : ".concat(square));
                 square.addEventListener("click", function(){
                     pieces = document.getElementsByClassName('rudpiece');
                     squares = document.getElementsByClassName('whitesquare');
-                    console.log(square);
                     for(var j = 0; j < squares.length; j++){
                         if(squares[j].getAttribute('isSelected') == true){
                             var target = squares[j];
@@ -38,8 +36,8 @@ function createChessBoard(){
                     }
                     for(var i = 0; i < pieces.length; i++){
                         if(pieces[i].getAttribute('isSelected') == true){
-                            target.appendChild(piece[i]);
-                            piece[i].setAttribute('isSelected', false);
+                            target.appendChild(pieces[i]);
+                            pieces[i].setAttribute('isSelected', false);
                             target.setAttribute('isSelected', false);
                 }}});
                 square.className = "whitesquare";
