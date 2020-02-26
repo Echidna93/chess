@@ -37,19 +37,20 @@ class Piece(){
 
 function legalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
-    var piece_coordinates = [piece.parentElement.getAttribute('row'), piece.parentElement.getAttribute('col')]);
+    var piece_coordinates = [piece.parentElement.getAttribute('row'), piece.parentElement.getAttribute('col')];
     // get target square coordinates as a tuple of integers
-    var target_square_coordinates = [parseInt(target_square.getElementById('row')), parseInt(target_square.getElementById.getAttribute('col'))]
+    var target_square_coordinates = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))]
     // variable to be returned by the function to determine whether or not the move is legal
     // to be set in each case
     var is_legal = false;
-    switch(piece.classList.contains()){
-        case "castle":
-                if()
-            break;
-        case "pawn":
-            break;
+    if(piece.classList.contains('castle')){
+        if(!(((target_square_coordinates[0] > piece_coordinates[0]) && (target_square_coordinates[1] > piece_coordinates[1])) || ((target_square_coordinates[0] < piece_coordinates[0]) && (target_square_coordinates[1] < piece_coordinates[0])))){
+                    is_legal = true;
+                }
+            }
+    if(piece.classList.contains('pawn')){
     }
+    return is_legal;
 }
 
 function setPieces(){
@@ -144,13 +145,14 @@ document.addEventListener('click', function(e){
     var pieces = this.getElementsByClassName('piece');
     for(var i = 0; i < pieces.length; i ++){
         if(isSelected(pieces[i])){
-            var square = document.getElementById(e.target.id);
-            square.append(pieces[i]);
-            pieces[i].setAttribute('isSelected', false);
+            if(legalMove(pieces[i], e.target)){
+                var square = document.getElementById(e.target.id);
+                square.append(pieces[i]);
+                pieces[i].setAttribute('isSelected', false);
+            }else{
+                console.log("move isn't legal");
+                }
+            }
         }
-    }
-    //var pieces = document.getElementsByClassName('piece');
-    console.log(stack.pop());
-    //square.appendChild(pieces[0]);
     }
 }, false);
