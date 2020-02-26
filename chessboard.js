@@ -35,7 +35,7 @@ class Piece(){
 // returns true if move is legal for piece
 // returns false if not
 
-function legalMove(piece, target_square){
+function isLegalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
     var piece_coordinates = [piece.parentElement.getAttribute('row'), piece.parentElement.getAttribute('col')];
     // get target square coordinates as a tuple of integers
@@ -145,7 +145,7 @@ document.addEventListener('click', function(e){
     var pieces = this.getElementsByClassName('piece');
     for(var i = 0; i < pieces.length; i ++){
         if(isSelected(pieces[i])){
-            if(legalMove(pieces[i], e.target)){
+            if(isLegalMove(pieces[i], e.target)){
                 var square = document.getElementById(e.target.id);
                 square.append(pieces[i]);
                 pieces[i].setAttribute('isSelected', false);
