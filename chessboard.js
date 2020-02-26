@@ -54,7 +54,7 @@ return: true if the piece is attacking; false otherwise
 
 function isAttacking(target_square){
     var is_attacking = false;
-    if(target_square.hasChildNodes()){
+    if(target_square.firstChild.classList.contains("piece")){
         console.log('here');
         is_attacking = true;
     }
@@ -154,13 +154,18 @@ document.addEventListener('click', function(e){
     for(var i = 0; i < pieces.length; i ++){
         if(isSelected(pieces[i])){
             if(isLegalMove(pieces[i], e.target)){
-                //var square = document.getElementById(e.target.id);
+                var square = document.getElementById(e.target.id);
+                
                 if(isAttacking(e.target)){
-                    e.target.append(pieces[i]);
+                    //e.target.append(pieces[i]);
                     pieces[i].setAttribute('isSelected', false);
+                    var attacked_piece = e.target.firstChild;
+                    console.log(attacked_piece.id)
+                    attacked_piece.remove();
+                    e.target.appendChild(pieces[i]);
                 }
                 }else{
-                console.log("move isn't legal");
+                //console.log(square.classList.contains('piece'));
                 }
             }
         }
