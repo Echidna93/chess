@@ -31,14 +31,18 @@ returns false if not
 
 function isLegalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
-    var piece_coordinates = [piece.parentElement.getAttribute('row'), piece.parentElement.getAttribute('col')];
+    var piece_coordinates = [parseInt(piece.parentElement.getAttribute('row')), parseInt(piece.parentElement.getAttribute('col'))];
     // get target square coordinates as a tuple of integers
     var target_square_coordinates = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))]
     // variable to be returned by the function to determine whether or not the move is legal
     // to be set in each case
     var is_legal = false;
     if(piece.classList.contains('castle')){
-        if(!(((target_square_coordinates[0] > piece_coordinates[0]) && (target_square_coordinates[1] > piece_coordinates[1])) || ((target_square_coordinates[0] < piece_coordinates[0]) && (target_square_coordinates[1] < piece_coordinates[0])))){
+        console.log(target_square_coordinates);
+        console.log(piece_coordinates);
+        if((target_square_coordinates[0] != piece_coordinates[0]) && (target_square_coordinates[1] != piece_coordinates[1])){
+                    
+                }else{
                     is_legal = true;
                 }
             }
@@ -156,16 +160,17 @@ document.addEventListener('click', function(e){
     for(var i = 0; i < pieces.length; i ++){
         if(isSelected(pieces[i])){
             if(isLegalMove(pieces[i], e.target)){
-                if(isAttacking(e.target)){
+                if(isAttacking(e.target) == 'true'){
                     pieces[i].setAttribute('isSelected', false);
                     var attacked_piece = e.target.firstChild;
                     console.log(attacked_piece.id)
                     attacked_piece.remove();
                     e.target.appendChild(pieces[i]);
-                }
+                }else{
                 e.target.appendChild(pieces[i]);
                 pieces[i].setAttribute('isSelected', false);
                 }
+            }
             }
         }
     }
