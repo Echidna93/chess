@@ -1,3 +1,4 @@
+
 // create chessboard
 class Stack{
     constructor(){
@@ -17,6 +18,20 @@ class Stack{
     }
 
 }
+/*
+class Piece(){
+    constructor(){
+        this.createElement('div');
+        this.className = "piece";
+        this.createAttribute('isSelected', f)
+    }
+}
+*/
+// legalMove takes in a start: row, column; end: row, col 
+// takes in piece object
+// returns a bool
+// returns true if move is legal for piece
+// returns false if not
 
 function legalMove(row, column, piece){
     switch(piece.classList.contains()){
