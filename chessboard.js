@@ -20,20 +20,14 @@ class Stack{
     }
 
 }
+
 /*
-class Piece(){
-    constructor(){
-        this.createElement('div');
-        this.className = "piece";
-        this.createAttribute('isSelected', f)
-    }
-}
+legalMove takes in a start: row, column; end: row, col 
+takes in piece object
+returns a bool
+returns true if move is legal for piece
+returns false if not
 */
-// legalMove takes in a start: row, column; end: row, col 
-// takes in piece object
-// returns a bool
-// returns true if move is legal for piece
-// returns false if not
 
 function isLegalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
@@ -51,6 +45,20 @@ function isLegalMove(piece, target_square){
     if(piece.classList.contains('pawn')){
     }
     return is_legal;
+}
+/*
+isAttacking takes in target square
+determines whether or not the square has a child element (i.e. a piece is currently occupying the square)
+return: true if the piece is attacking; false otherwise
+*/
+
+function isAttacking(target_square){
+    var is_attacking = false;
+    if(target_square.hasChildNodes()){
+        console.log('here');
+        is_attacking = true;
+    }
+    return is_attacking;
 }
 
 function setPieces(){
@@ -146,10 +154,12 @@ document.addEventListener('click', function(e){
     for(var i = 0; i < pieces.length; i ++){
         if(isSelected(pieces[i])){
             if(isLegalMove(pieces[i], e.target)){
-                var square = document.getElementById(e.target.id);
-                square.append(pieces[i]);
-                pieces[i].setAttribute('isSelected', false);
-            }else{
+                //var square = document.getElementById(e.target.id);
+                if(isAttacking(e.target)){
+                    e.target.append(pieces[i]);
+                    pieces[i].setAttribute('isSelected', false);
+                }
+                }else{
                 console.log("move isn't legal");
                 }
             }
