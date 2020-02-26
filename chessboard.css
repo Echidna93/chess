@@ -28,6 +28,9 @@
     width: 25px;
     height: 25px;
 }
-.piece:before{
+.whitepawn:before{
     content:"\2659";
+}
+.castle:before{
+    content:"\265C";
 }

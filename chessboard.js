@@ -18,15 +18,24 @@ class Stack{
 
 }
 
+function legalMove(row, column, piece){
+    switch(piece.classList.contains()){
+        case "castle":
+            break;
+        case "pawn":
+            break;
+    }
+}
+
 function setPieces(){
         var a0 = document.getElementById('a0');
         var a2 = document.getElementById('a1');
         var piece = document.createElement('div');
-        piece.className = 'piece';
+        piece.className = 'piece whitepawn';
         piece.id = 'boo';
         piece.setAttribute("isSelected", false);
         var piece2 = document.createElement('div');
-        piece2.className = 'piece';
+        piece2.className = 'piece castle';
         piece2.id = 'booff';
         piece2.setAttribute("isSelected", false);
         a0.appendChild(piece2);
@@ -36,12 +45,15 @@ function setPieces(){
 
 function createChessBoard(){    
     var board = document.createElement('table');
+    board.className = 'board';
     for(var i = 0; i < 8; i++){
         var row = document.createElement('tr');
         for(var j = 0;  j < 8; j++){
             var square = document.createElement('td');
             square.id = calcSquare(i, j);
             square.setAttribute('isSelected', false);
+            square.setAttribute('rownum', i);
+            square.setAttribute('colnum', j);
             square.addEventListener('click', function(){
                 square.setAttribute('isSelected', true);
             });
@@ -66,6 +78,7 @@ function calcSquare(row, column){
     return String.fromCharCode(97 + column) + row;
 }
 
+
 function selectPiece(piece){
     piece.setAttribute("isSelected", true);
 }
@@ -73,7 +86,9 @@ function selectPiece(piece){
 createChessBoard();
 setPieces();
 stack = new Stack();
-
+var tables = document.getElementsByClassName('board');
+var table = tables[0];
+console.log(table);
 // takes in no arguments
 // return: bool
 // function determine whether or not there is a piece that is selected
@@ -95,7 +110,7 @@ function isSelected(element){
 }
 
 document.addEventListener('click', function(e){
-    if(e.target.className == 'piece'){
+    if(e.target.classList.contains('piece')){
         e.target.id;
         e.target.setAttribute('isSelected', true);
     }else{
