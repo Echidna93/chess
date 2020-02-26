@@ -27,5 +27,7 @@
 .piece {
     width: 25px;
     height: 25px;
-    background-color: pink;
+}
+.piece:before{
+    content:"\2659";
 }
