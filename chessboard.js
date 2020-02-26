@@ -1,5 +1,7 @@
 
 // create chessboard
+// TODO: create stack of all moves played so that the moves can be "undone"
+// TODO: display all moves on expandable log on the side of the screen
 class Stack{
     constructor(){
         this.items = [];
@@ -33,9 +35,17 @@ class Piece(){
 // returns true if move is legal for piece
 // returns false if not
 
-function legalMove(row, column, piece){
+function legalMove(piece, target_square){
+    // get current position of the chess piece as a tuple of integers
+    var piece_coordinates = [piece.parentElement.getAttribute('row'), piece.parentElement.getAttribute('col')]);
+    // get target square coordinates as a tuple of integers
+    var target_square_coordinates = [parseInt(target_square.getElementById('row')), parseInt(target_square.getElementById.getAttribute('col'))]
+    // variable to be returned by the function to determine whether or not the move is legal
+    // to be set in each case
+    var is_legal = false;
     switch(piece.classList.contains()){
         case "castle":
+                if()
             break;
         case "pawn":
             break;
@@ -67,8 +77,8 @@ function createChessBoard(){
             var square = document.createElement('td');
             square.id = calcSquare(i, j);
             square.setAttribute('isSelected', false);
-            square.setAttribute('rownum', i);
-            square.setAttribute('colnum', j);
+            square.setAttribute('row', i);
+            square.setAttribute('col', j);
             square.addEventListener('click', function(){
                 square.setAttribute('isSelected', true);
             });
@@ -128,6 +138,8 @@ document.addEventListener('click', function(e){
     if(e.target.classList.contains('piece')){
         e.target.id;
         e.target.setAttribute('isSelected', true);
+        //var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
+        //console.log(typeof parseInt(coordinates[1]));
     }else{
     var pieces = this.getElementsByClassName('piece');
     for(var i = 0; i < pieces.length; i ++){
