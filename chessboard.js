@@ -31,23 +31,28 @@ returns false if not
 
 function isLegalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
-    var piece_coordinates = [parseInt(piece.parentElement.getAttribute('row')), parseInt(piece.parentElement.getAttribute('col'))];
+    var crrnt_coord = [parseInt(piece.parentElement.getAttribute('row')), parseInt(piece.parentElement.getAttribute('col'))];
     // get target square coordinates as a tuple of integers
-    var target_square_coordinates = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))]
+    var trgt_coord = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))]
     // variable to be returned by the function to determine whether or not the move is legal
     // to be set in each case
     var is_legal = false;
     if(piece.classList.contains('castle')){
        // console.log(target_square_coordinates);
         // console.log(piece_coordinates);
-        if(!((target_square_coordinates[0] != piece_coordinates[0]) && (target_square_coordinates[1] != piece_coordinates[1]))){
+        if(!((trgt_coord[0] != crrnt_coord[0]) && (crrnt_coord[1] != crrnt_coord[1]))){
                     is_legal = true;
             }
-    if(piece.classList.contains('pawn')){
+        }
+    else if(piece.classList.contains('pawn')){
+        console.log('here');
+        if(trgt_coord[1] == crrnt_coord[1] + 1){ 
+            console.log('here');
+            is_legal = true;
+        }
     }
     return is_legal;
     }
-}
 /*
 isAttacking takes in target square
 determines whether or not the square has a child element (i.e. a piece is currently occupying the square)
@@ -67,7 +72,7 @@ function setPieces(){
         var a0 = document.getElementById('a0');
         var a2 = document.getElementById('a1');
         var piece = document.createElement('div');
-        piece.className = 'piece whitepawn';
+        piece.className = 'piece pawn';
         piece.id = 'boo';
         piece.setAttribute("isSelected", false);
         var piece2 = document.createElement('div');

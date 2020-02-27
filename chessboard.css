@@ -28,7 +28,7 @@
     width: 25px;
     height: 25px;
 }
-.whitepawn:before{
+.pawn:before{
     content:"\2659";
 }
 .castle:before{
