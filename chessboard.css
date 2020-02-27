@@ -45,3 +45,9 @@
 .blackbishop:before{
     content:"\265D";
 }
+.whiteknight:before{
+    content:"\2658";
+}
+.blackknight:before{
+    content:"\265E";
+}

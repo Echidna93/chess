@@ -33,47 +33,60 @@ function isLegalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
     var crrnt_coord = [parseInt(piece.parentElement.getAttribute('row')), parseInt(piece.parentElement.getAttribute('col'))];
     // get target square coordinates as a tuple of integers
-    var trgt_coord = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))]
-    // castle
-    if(piece.classList.contains('castle')){
-       // console.log(target_square_coordinates);
-        // console.log(piece_coordinates);
-        if(!((trgt_coord[0] != crrnt_coord[0]) && (crrnt_coord[1] != crrnt_coord[1]))){
-                    return true;
-            }
+    var trgt_coord = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))];
+    if(isAttacking(target_square)){
+        if(target_square.firstChild.getAttribute("color") == piece.getAttribute("color")){
+            return false;
         }
-        // pawns
-    else if(piece.classList.contains('blackpawn')){
-        if(!(isAttacking(target_square))){
-            if((trgt_coord[0] == crrnt_coord[0] + 1) && (trgt_coord[1] == crrnt_coord[1])){
-                    return true;
+    }
+        // castle
+        if(piece.classList.contains('castle')){
+        // console.log(target_square_coordinates);
+            // console.log(piece_coordinates);
+            if(!((trgt_coord[0] != crrnt_coord[0]) && (crrnt_coord[1] != crrnt_coord[1]))){
+                        return true;
+                }
+            }
+            // pawns
+        else if(piece.classList.contains('blackpawn')){
+            if(!(isAttacking(target_square))){
+                if((trgt_coord[0] == crrnt_coord[0] + 1) && (trgt_coord[1] == crrnt_coord[1])){
+                        return true;
+                        }
+                    }
+            else{
+                if((trgt_coord[0] == crrnt_coord[0] + 1) && (( trgt_coord[1] == crrnt_coord[1] - 1  )|| (trgt_coord[1] == crrnt_coord[1] + 1))){
+                        return true;
                     }
                 }
-        else{
-            if((trgt_coord[0] == crrnt_coord[0] + 1) && (( trgt_coord[1] == crrnt_coord[1] - 1  )|| (trgt_coord[1] == crrnt_coord[1] + 1))){
-                    return true;
-                }
             }
-        }
-    else if(piece.classList.contains('whitepawn')){
-        if(!(isAttacking(target_square))){
-            if((trgt_coord[0] == crrnt_coord[0] - 1) && (trgt_coord[1] == crrnt_coord[1])){
-                    return true;
+        else if(piece.classList.contains('whitepawn')){
+            if(!(isAttacking(target_square))){
+                if((trgt_coord[0] == crrnt_coord[0] - 1) && (trgt_coord[1] == crrnt_coord[1])){
+                        return true;
+                        }
+                    }
+            else{
+                if((trgt_coord[0] == crrnt_coord[0] - 1) && (( trgt_coord[1] == crrnt_coord[1] - 1  )|| (trgt_coord[1] == crrnt_coord[1] + 1))){
+                        return true;
                     }
                 }
-        else{
-            if((trgt_coord[0] == crrnt_coord[0] - 1) && (( trgt_coord[1] == crrnt_coord[1] - 1  )|| (trgt_coord[1] == crrnt_coord[1] + 1))){
+            }
+        // bishop
+        else if(piece.classList.contains('blackbishop') || piece.classList.contains('whitebishop')){
+                if(!((trgt_coord[0] == crrnt_coord[0]) || (trgt_coord[1] == crrnt_coord[1]))){
                     return true;
                 }
-            }
         }
-    else if(piece.classList.contains('blackbishop') || piece.classList.contains('whitebishop')){
-            if(!((trgt_coord[0] == crrnt_coord[0]) || (trgt_coord[1] == crrnt_coord[1]))){
+        //knight
+        else if(piece.classList.contains('whiteknight') || piece.classList.contains('blackknight')){
+            if(((Math.abs(trgt_coord[0] - crrnt_coord[0]) == 2) && (Math.abs(trgt_coord[1] - crrnt_coord[1]) == 1)) || ((Math.abs(trgt_coord[0] - crrnt_coord[0]) == 1) && (Math.abs(trgt_coord[1] - crrnt_coord[1]) == 2))){
                 return true;
             }
-    }
-    return false;
-    }
+        }
+    
+        return false;
+}
 /*
 isAttacking takes in target square
 determines whether or not the square has a child element (i.e. a piece is currently occupying the square)
@@ -99,28 +112,38 @@ function setPieces(){
         var a1 = document.getElementById('a1');
         var a5 = document.getElementById('b5');
         var g0 = document.getElementById('g0');
+        var g7 = document.getElementById('g7');
         
         var blck_pwn = document.createElement('div')
         var wht_pwn = document.createElement('div');
         var blck_cstl = document.createElement('div');
         var blck_bshp = document.createElement('div');
+        var wht_kngt = document.createElement('div');
         
         wht_pwn.className = 'piece whitepawn';
         wht_pwn.id = 'boo';
         wht_pwn.setAttribute("isSelected", false);
+        wht_pwn.setAttribute("color", "white");
         blck_cstl.className = 'piece castle';
+        blck_cstl.setAttribute("color", "black");
         blck_cstl.id = 'booff';
         blck_cstl.setAttribute("isSelected", false);
+        blck_pwn.setAttribute("color", "black");
         blck_pwn.className = "piece blackpawn";
         blck_pwn.setAttribute('isSelected', false);
         blck_pwn.id = "blck-pwn";
         blck_bshp.setAttribute('isSelected', false);
+        blck_bshp.setAttribute("color", "black");
         blck_bshp.className = "piece blackbishop";
+        wht_kngt.className = "piece whiteknight";
+        wht_kngt.setAttribute("isSelected", "false");
+        wht_kngt.setAttribute("color", "white");
         
         a0.appendChild(blck_cstl);
         a1.appendChild(blck_pwn);
         a5.appendChild(wht_pwn);
         g0.appendChild(blck_bshp);
+        g7.appendChild(wht_kngt);
 }
 
 
