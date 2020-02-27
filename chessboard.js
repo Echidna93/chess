@@ -41,19 +41,18 @@ function isLegalMove(piece, target_square){
                     return true;
             }
         }
-    else if(piece.classList.contains('pawn')){
-        if(piece.classList.contains('white')){
+    else if(piece.classList.contains('blackpawn')){
             if((trgt_coord[0] == crrnt_coord[0] + 1)){ 
                  return true;
              }
-             }else{
-             if((trgt_coord[0] == crrnt_coord[0] - 1)){
+        }
+    else if(piece.classList.contains('whitepawn')){
+        if((trgt_coord[0] == crrnt_coord[0] - 1)){
                  return true;
                  }
             }
     return false;
     }
-}
 /*
 isAttacking takes in target square
 determines whether or not the square has a child element (i.e. a piece is currently occupying the square)
@@ -69,19 +68,33 @@ function isAttacking(target_square){
     return false;
 }
 
+/*
+TODO: create loop to simulate creation of the pieces
+don't create every piece individually
+*/
+
 function setPieces(){
         var a0 = document.getElementById('a0');
-        var a2 = document.getElementById('a1');
-        var piece = document.createElement('div');
-        piece.className = 'piece white pawn';
-        piece.id = 'boo';
-        piece.setAttribute("isSelected", false);
-        var piece2 = document.createElement('div');
-        piece2.className = 'piece castle';
-        piece2.id = 'booff';
-        piece2.setAttribute("isSelected", false);
-        a0.appendChild(piece2);
-        a2.appendChild(piece);
+        var a1 = document.getElementById('a1');
+        var a5 = document.getElementById('a5');
+        
+        var blck_pwn = document.createElement('div')
+        var wht_pwn = document.createElement('div');
+        var blck_cstl = document.createElement('div');
+        
+        wht_pwn.className = 'piece whitepawn';
+        wht_pwn.id = 'boo';
+        wht_pwn.setAttribute("isSelected", false);
+        blck_cstl.className = 'piece castle';
+        blck_cstl.id = 'booff';
+        blck_cstl.setAttribute("isSelected", false);
+        blck_pwn.className = "piece blackpawn";
+        blck_pwn.setAttribute('isSelected', false);
+        blck_pwn.id = "blck-pwn";
+        
+        a0.appendChild(blck_cstl);
+        a1.appendChild(blck_pwn);
+        a5.appendChild(wht_pwn);
 }
 
 
@@ -125,8 +138,6 @@ function selectPiece(piece){
     piece.setAttribute("isSelected", true);
 }
 
-createChessBoard();
-setPieces();
 // takes in no arguments
 // return: bool
 // function determine whether or not there is a piece that is selected
@@ -146,6 +157,14 @@ function isSelected(element){
     }
     return false;
 }
+
+/*
+    This will be peeled off into a file called main.js
+    The following lines are used to simulate actual gameplay
+*/
+createChessBoard();
+setPieces();
+
 
 document.addEventListener('click', function(e){
     if(e.target.classList.contains('piece')){

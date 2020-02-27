@@ -30,8 +30,11 @@
     width: 25px;
     height: 25px;
 }
-.pawn:before{
+.whitepawn:before{
     content:"\2659";
+}
+.blackpawn:before{
+    content:"\265F";
 }
 .castle:before{
     content:"\265C";
