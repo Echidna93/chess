@@ -24,6 +24,8 @@
     display: table-cell;
     vertical-align:middle;
 }
+.white, .black {
+}
 .piece {
     width: 25px;
     height: 25px;
