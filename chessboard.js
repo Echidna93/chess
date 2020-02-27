@@ -38,17 +38,15 @@ function isLegalMove(piece, target_square){
     // to be set in each case
     var is_legal = false;
     if(piece.classList.contains('castle')){
-        console.log(target_square_coordinates);
-        console.log(piece_coordinates);
-        if((target_square_coordinates[0] != piece_coordinates[0]) && (target_square_coordinates[1] != piece_coordinates[1])){
-                    
-                }else{
+       // console.log(target_square_coordinates);
+        // console.log(piece_coordinates);
+        if(!((target_square_coordinates[0] != piece_coordinates[0]) && (target_square_coordinates[1] != piece_coordinates[1]))){
                     is_legal = true;
-                }
             }
     if(piece.classList.contains('pawn')){
     }
     return is_legal;
+    }
 }
 /*
 isAttacking takes in target square
@@ -57,14 +55,12 @@ return: true if the piece is attacking; false otherwise
 */
 
 function isAttacking(target_square){
-    var is_attacking = false;
+    target_square.hasChildNodes() ? console.log(target_square.id) : console.log('does not');
     if(target_square.hasChildNodes()){
-        if(target_square.firstChild.classList.contains("piece")){
-            console.log('here');
-            is_attacking = true;
+                console.log('here');
+                return true;    
         }
-    }
-    return is_attacking;
+    return false;
 }
 
 function setPieces(){
@@ -125,10 +121,6 @@ function selectPiece(piece){
 
 createChessBoard();
 setPieces();
-stack = new Stack();
-var tables = document.getElementsByClassName('board');
-var table = tables[0];
-console.log(table);
 // takes in no arguments
 // return: bool
 // function determine whether or not there is a piece that is selected
@@ -156,22 +148,26 @@ document.addEventListener('click', function(e){
         //var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
         //console.log(typeof parseInt(coordinates[1]));
     }else{
-    var pieces = this.getElementsByClassName('piece');
-    for(var i = 0; i < pieces.length; i ++){
-        if(isSelected(pieces[i])){
-            if(isLegalMove(pieces[i], e.target)){
-                if(isAttacking(e.target) == 'true'){
-                    pieces[i].setAttribute('isSelected', false);
-                    var attacked_piece = e.target.firstChild;
-                    console.log(attacked_piece.id)
-                    attacked_piece.remove();
-                    e.target.appendChild(pieces[i]);
-                }else{
-                e.target.appendChild(pieces[i]);
-                pieces[i].setAttribute('isSelected', false);
-                }
-            }
+        //isAttacking(e.target) ? console.log(e.target.children) : console.log('does not');
+        var pieces = this.getElementsByClassName('piece');
+        for(var i = 0; i < pieces.length; i++){
+            if(isSelected(pieces[i])){
+                var selected_piece = pieces[i];
             }
         }
-    }
-}, false);
+                if(isLegalMove(selected_piece, e.target)){
+                    if(e.target.hasChildNodes()){
+                        var attacked_piece = e.target.firstChild;
+                        console.log(e.target.id);
+                        attacked_piece.remove();
+                        e.target.appendChild(selected_piece);
+                    }else{
+                        e.target.appendChild(selected_piece);
+                        //console.log('not attacking')
+                        //pieces[i].setAttribute('isSelected', false);
+                    }
+                    selected_piece.setAttribute('isSelected', false);
+                }
+
+            }
+    }, false);
