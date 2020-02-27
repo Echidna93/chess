@@ -39,3 +39,9 @@
 .castle:before{
     content:"\265C";
 }
+.whitebishop:before{
+    content:"\2657";
+}
+.blackbishop:before{
+    content:"\265D";
+}

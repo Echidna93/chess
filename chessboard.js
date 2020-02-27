@@ -34,6 +34,7 @@ function isLegalMove(piece, target_square){
     var crrnt_coord = [parseInt(piece.parentElement.getAttribute('row')), parseInt(piece.parentElement.getAttribute('col'))];
     // get target square coordinates as a tuple of integers
     var trgt_coord = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))]
+    // castle
     if(piece.classList.contains('castle')){
        // console.log(target_square_coordinates);
         // console.log(piece_coordinates);
@@ -41,16 +42,36 @@ function isLegalMove(piece, target_square){
                     return true;
             }
         }
+        // pawns
     else if(piece.classList.contains('blackpawn')){
-            if((trgt_coord[0] == crrnt_coord[0] + 1)){ 
-                 return true;
-             }
+        if(!(isAttacking(target_square))){
+            if((trgt_coord[0] == crrnt_coord[0] + 1) && (trgt_coord[1] == crrnt_coord[1])){
+                    return true;
+                    }
+                }
+        else{
+            if((trgt_coord[0] == crrnt_coord[0] + 1) && (( trgt_coord[1] == crrnt_coord[1] - 1  )|| (trgt_coord[1] == crrnt_coord[1] + 1))){
+                    return true;
+                }
+            }
         }
     else if(piece.classList.contains('whitepawn')){
-        if((trgt_coord[0] == crrnt_coord[0] - 1)){
-                 return true;
-                 }
+        if(!(isAttacking(target_square))){
+            if((trgt_coord[0] == crrnt_coord[0] - 1) && (trgt_coord[1] == crrnt_coord[1])){
+                    return true;
+                    }
+                }
+        else{
+            if((trgt_coord[0] == crrnt_coord[0] - 1) && (( trgt_coord[1] == crrnt_coord[1] - 1  )|| (trgt_coord[1] == crrnt_coord[1] + 1))){
+                    return true;
+                }
             }
+        }
+    else if(piece.classList.contains('blackbishop') || piece.classList.contains('whitebishop')){
+            if(!((trgt_coord[0] == crrnt_coord[0]) || (trgt_coord[1] == crrnt_coord[1]))){
+                return true;
+            }
+    }
     return false;
     }
 /*
@@ -76,11 +97,13 @@ don't create every piece individually
 function setPieces(){
         var a0 = document.getElementById('a0');
         var a1 = document.getElementById('a1');
-        var a5 = document.getElementById('a5');
+        var a5 = document.getElementById('b5');
+        var g0 = document.getElementById('g0');
         
         var blck_pwn = document.createElement('div')
         var wht_pwn = document.createElement('div');
         var blck_cstl = document.createElement('div');
+        var blck_bshp = document.createElement('div');
         
         wht_pwn.className = 'piece whitepawn';
         wht_pwn.id = 'boo';
@@ -91,10 +114,13 @@ function setPieces(){
         blck_pwn.className = "piece blackpawn";
         blck_pwn.setAttribute('isSelected', false);
         blck_pwn.id = "blck-pwn";
+        blck_bshp.setAttribute('isSelected', false);
+        blck_bshp.className = "piece blackbishop";
         
         a0.appendChild(blck_cstl);
         a1.appendChild(blck_pwn);
         a5.appendChild(wht_pwn);
+        g0.appendChild(blck_bshp);
 }
 
 
