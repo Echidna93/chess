@@ -43,7 +43,7 @@ function isLegalMove(piece, target_square){
         if(piece.classList.contains('castle')){
         // console.log(target_square_coordinates);
             // console.log(piece_coordinates);
-            if(!((trgt_coord[0] != crrnt_coord[0]) && (crrnt_coord[1] != crrnt_coord[1]))){
+            if((Math.abs(trgt_coord[0] - crrnt_coord[0]) == 0) || (Math.abs(trgt_coord[1] - crrnt_coord[1]) == 0)){
                         return true;
                 }
             }
@@ -74,7 +74,7 @@ function isLegalMove(piece, target_square){
             }
         // bishop
         else if(piece.classList.contains('blackbishop') || piece.classList.contains('whitebishop')){
-                if(!((trgt_coord[0] == crrnt_coord[0]) || (trgt_coord[1] == crrnt_coord[1]))){
+                if((Math.abs(trgt_coord[0] - crrnt_coord[0]) == Math.abs(trgt_coord[1] - crrnt_coord[1]))){
                     return true;
                 }
         }
@@ -84,7 +84,17 @@ function isLegalMove(piece, target_square){
                 return true;
             }
         }
-    
+        else if(piece.classList.contains('whitequeen') || piece.classList.contains('blackqueen')){ 
+            if(((Math.abs(trgt_coord[0] - crrnt_coord[0]) == 0) || (Math.abs(trgt_coord[1] - crrnt_coord[1]) == 0)) || (Math.abs(trgt_coord[0] - crrnt_coord[0]) == Math.abs(trgt_coord[1] - crrnt_coord[1]))){
+                return true;
+            }
+        }
+        else if(piece.classList.contains('blackking') || piece.classList.contains('whiteking')){
+            if(((Math.abs(trgt_coord[0] - crrnt_coord[0]) == 1) && (Math.abs(trgt_coord[1] - crrnt_coord[1]) == 0)) || ((Math.abs(trgt_coord[1] - crrnt_coord[1]) == 1) && (Math.abs(trgt_coord[0] - crrnt_coord[0]) == 0)) || ((Math.abs(trgt_coord[1] - crrnt_coord[1]) == 1) && (Math.abs(trgt_coord[0] - crrnt_coord[0]) == 1))){
+                return true;
+            }
+        }
+        console.log('illegal move');
         return false;
 }
 /*
@@ -113,12 +123,16 @@ function setPieces(){
         var a5 = document.getElementById('b5');
         var g0 = document.getElementById('g0');
         var g7 = document.getElementById('g7');
+        var e7 = document.getElementById('e7');
+        var a6 = document.getElementById('a6');
         
         var blck_pwn = document.createElement('div')
         var wht_pwn = document.createElement('div');
         var blck_cstl = document.createElement('div');
         var blck_bshp = document.createElement('div');
         var wht_kngt = document.createElement('div');
+        var wht_queen = document.createElement('div');
+        var blck_king = document.createElement('div');
         
         wht_pwn.className = 'piece whitepawn';
         wht_pwn.id = 'boo';
@@ -138,12 +152,21 @@ function setPieces(){
         wht_kngt.className = "piece whiteknight";
         wht_kngt.setAttribute("isSelected", "false");
         wht_kngt.setAttribute("color", "white");
+        wht_queen.setAttribute("isSelected", false);
+        wht_queen.setAttribute("color", "white");
+        wht_queen.className = "piece whitequeen";
+        blck_king.setAttribute("isSelected", false);
+        blck_king.setAttribute("color", "black");
+        blck_king.className = "piece blackking";
+
         
         a0.appendChild(blck_cstl);
         a1.appendChild(blck_pwn);
         a5.appendChild(wht_pwn);
         g0.appendChild(blck_bshp);
         g7.appendChild(wht_kngt);
+        e7.appendChild(wht_queen);
+        a6.appendChild(blck_king)
 }
 
 

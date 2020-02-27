@@ -51,3 +51,15 @@
 .blackknight:before{
     content:"\265E";
 }
+.blackqueen:before{
+    content:"\265B";
+}
+.whitequeen:before{
+    content:"\2655";
+}
+.blackking:before{
+    content:"\265A";
+}
+.whiteking:before{
+    content:"\2654";
+}
