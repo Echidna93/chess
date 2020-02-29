@@ -1,7 +1,10 @@
-
 // create chessboard
 // TODO: create stack of all moves played so that the moves can be "undone"
 // TODO: display all moves on expandable log on the side of the screen
+/* 
+TODO: create square class, squares will have an x and y component as well
+as a row signifier (i.e. a,b,c...h)
+*/
 class Stack{
     constructor(){
         this.items = [];
@@ -22,17 +25,69 @@ class Stack{
 }
 
 class Piece{
-    constructor(piece, class_name){
+    constructor(piece, class_name, color){
         this.piece = piece;
         this.class_name = class_name;
         this.piece.setAttribute("isSelected", false);
+        this.piece.setAttribute("color", color);
     }
-    sayHello(){
-        this.piece.onclick = function(){console.log('this is coming from inside the class')}
-        
+    setIsSelected(value){
+                this.piece.setAttribute("isSelected", value);
+        }
+    getIsSelected(value){
+                return this.piece.getAttribute("isSelected");
     }
-    
+    move(crrnt_square, trgt_square){
+
+    }
 }
+
+class Square{
+    constructor(square){
+        this.square = square;
+    }
+
+}
+
+/*
+direction vector
+signum
+implement a signum function that "mimics" one seen in Java's Math.signum
+signum will take in two coordinates
+subtract the x and y values for each coordinate
+and return a direction vector
+*/
+
+function getDirectionVector(crrnt_coord, trgt_coord){
+    // assume we have converted the row and col values that are assigned to
+    // DOM elements to coordinate vectors
+    x = crrnt_coord[0] - trgt_coord[0];
+    y = crrnt_coord[1] - trgt_coord[1];
+    if(x>=1 && y>1){
+        return [1,1];
+    }
+    else if (x>0 && y==0){
+        return [1,0];
+    }
+    else if (x>0 && y<0){
+        return [1,-1];
+    }
+    else if (x==0 && y>0){
+        return [0,1];
+    }
+    else if (x<0 && y>0){
+        return [-1, 1];
+    }
+    else if(x<0 && y<0){
+        return [-1, -1]
+    }
+    else if(x<0 && y==0){
+        return [-1, 0]
+    }
+    return [0,0];
+}
+
+
 
 /*
 legalMove takes in a start: row, column; end: row, col 
@@ -110,6 +165,39 @@ function isLegalMove(piece, target_square){
         console.log('illegal move');
         return false;
 }
+
+function tuplesAreEqual(crrnt_coord, trgt_coord){
+    if(!((crrnt_coord[0]-trgt_coord[0]==0) && (crrnt_coord[1]-trgt_coord[1]==0))){
+        return false;
+    }
+    return true;
+}
+
+/*
+    isBlocked a function that determines if path that piece takes is blocked
+    arguments: crrnt_ is the starting position of the piece,
+    trgt_square is the destination
+    returns true if blocked (i.e. another piece is between the crrnt_sqr and trgt sqr)
+    we only want to call this method if the 
+*/
+
+function isBlocked(crrnt_coord, trgt_coord){
+    // get direction vector tuple
+    // only run this for non-knight piecies
+    var direction_vector =  getDirectionVector(crrnt_coord, trgt_coord);
+    while(!(tuplesAreEqual(crrnt_coord, trgt_coord))){
+        crrnt_coord[0] += direction_vector[0];
+        crrnt_coord[1] += direction_vector[1];
+        // if the element at crrnt_coord contains a child Node (i.e. a piece) and the crrnt_coord is not the trgt_coord
+        // if we are in the target coordinate and the piece is of the opposite color return false--consider it an attack
+        // return true
+        if(tuplesAreEqual(crrnt_coord, trgt_coord) && ){
+            return 
+        }
+    }
+    return flase;
+}
+
 /*
 isAttacking takes in target square
 determines whether or not the square has a child element (i.e. a piece is currently occupying the square)
@@ -147,7 +235,7 @@ function setPieces(){
         var wht_queen = document.createElement('div');
         var blck_king = document.createElement('div');
         const black_king = new Piece(blck_king, "piece blackking");
-        black_king.sayHello();
+        //black_king.sayHello();
         
         wht_pwn.className = 'piece whitepawn';
         wht_pwn.id = 'boo';
