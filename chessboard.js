@@ -21,6 +21,16 @@ class Stack{
 
 }
 
+class Piece{
+    constructor(piece){
+        this.piece = piece;
+    }
+    sayHello(){
+        this.piece.onclick = function(){console.log('this is coming from inside the class')}
+    }
+    
+}
+
 /*
 legalMove takes in a start: row, column; end: row, col 
 takes in piece object
@@ -126,13 +136,15 @@ function setPieces(){
         var e7 = document.getElementById('e7');
         var a6 = document.getElementById('a6');
         
-        var blck_pwn = document.createElement('div')
+        var blck_pwn = document.createElement('div');
         var wht_pwn = document.createElement('div');
         var blck_cstl = document.createElement('div');
         var blck_bshp = document.createElement('div');
         var wht_kngt = document.createElement('div');
         var wht_queen = document.createElement('div');
         var blck_king = document.createElement('div');
+        const black_king = new Piece(blck_king);
+        black_king.sayHello();
         
         wht_pwn.className = 'piece whitepawn';
         wht_pwn.id = 'boo';
