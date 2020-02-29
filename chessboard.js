@@ -22,11 +22,14 @@ class Stack{
 }
 
 class Piece{
-    constructor(piece){
+    constructor(piece, class_name){
         this.piece = piece;
+        this.class_name = class_name;
+        this.piece.setAttribute("isSelected", false);
     }
     sayHello(){
         this.piece.onclick = function(){console.log('this is coming from inside the class')}
+        
     }
     
 }
@@ -143,7 +146,7 @@ function setPieces(){
         var wht_kngt = document.createElement('div');
         var wht_queen = document.createElement('div');
         var blck_king = document.createElement('div');
-        const black_king = new Piece(blck_king);
+        const black_king = new Piece(blck_king, "piece blackking");
         black_king.sayHello();
         
         wht_pwn.className = 'piece whitepawn';
@@ -160,14 +163,13 @@ function setPieces(){
         blck_pwn.id = "blck-pwn";
         blck_bshp.setAttribute('isSelected', false);
         blck_bshp.setAttribute("color", "black");
-        blck_bshp.className = "piece blackbishop";
         wht_kngt.className = "piece whiteknight";
         wht_kngt.setAttribute("isSelected", "false");
         wht_kngt.setAttribute("color", "white");
         wht_queen.setAttribute("isSelected", false);
         wht_queen.setAttribute("color", "white");
         wht_queen.className = "piece whitequeen";
-        blck_king.setAttribute("isSelected", false);
+        //blck_king.setAttribute("isSelected", false);
         blck_king.setAttribute("color", "black");
         blck_king.className = "piece blackking";
 
