@@ -43,14 +43,21 @@ class Piece{
 }
 
 class Square{
-    constructor(square, x, y, color){
+    constructor(square, x, y){
         this.square = square;
         this.x = x;
         this.y = y;
-        this.color = color;
-        this.square.setAttribute("isSelected", false);
-        this.square.setAttribute("color", color);
+        this.isSelected = false;
     }
+
+    getIsSelected(){
+        return this.isSelected;
+    }
+
+    setIsSelected(value){
+        this.isSelected = value;
+    }
+
 
 }
 
@@ -287,10 +294,8 @@ function createChessBoard(){
             var square_object = new Square(square, i, j);
             square.id = calcSquare(i, j);
             square.setAttribute('isSelected', false);
-            square.setAttribute('row', i);
-            square.setAttribute('col', j);
             square.addEventListener('click', function(){
-                square.setAttribute('isSelected', true);
+                square_object.setIsSelected(true);
             });
             if((j+i)%2 === 0){
                 square.className = "blacksquare";
