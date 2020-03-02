@@ -43,8 +43,13 @@ class Piece{
 }
 
 class Square{
-    constructor(square){
+    constructor(square, x, y, color){
         this.square = square;
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.square.setAttribute("isSelected", false);
+        this.square.setAttribute("color", color);
     }
 
 }
@@ -279,6 +284,7 @@ function createChessBoard(){
         var row = document.createElement('tr');
         for(var j = 0;  j < 8; j++){
             var square = document.createElement('td');
+            var square_object = new Square(square, i, j);
             square.id = calcSquare(i, j);
             square.setAttribute('isSelected', false);
             square.setAttribute('row', i);
