@@ -24,22 +24,24 @@ class Stack{
 
 }
 
+var pieces = [];
+
 class Piece{
-    constructor(piece, class_name, color){
-        this.piece = piece;
-        this.class_name = class_name;
-        this.piece.setAttribute("isSelected", false);
-        this.piece.setAttribute("color", color);
+    constructor(name){
+        this.name = name;
+        this.id = "bk";
+        this.repr = document.createElement('div');
+        //this.class_name = class_name;
+        this.is_selected = false;
+        //this.setAttribute("color", color);
     }
     setIsSelected(value){
-                this.piece.setAttribute("isSelected", value);
+                this.is_selected = value;
         }
-    getIsSelected(value){
-                return this.piece.getAttribute("isSelected");
+    getIsSelected(){
+                return this.is_selected;
     }
-    move(crrnt_square, trgt_square){
-
-    }
+    //move(crrnt_square, trgt_square){}
 }
 
 class Square{
@@ -112,6 +114,7 @@ returns false if not
 function isLegalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
     var crrnt_coord = [parseInt(piece.parentElement.getAttribute('row')), parseInt(piece.parentElement.getAttribute('col'))];
+    console.log(target_square instanceof Square);
     // get target square coordinates as a tuple of integers
     var trgt_coord = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))];
     if(isAttacking(target_square)){
@@ -192,7 +195,7 @@ function tuplesAreEqual(crrnt_coord, trgt_coord){
     returns true if blocked (i.e. another piece is between the crrnt_sqr and trgt sqr)
     we only want to call this method if the 
 */
-
+/*
 function isBlocked(crrnt_coord, trgt_coord){
     // get direction vector tuple
     // only run this for non-knight piecies
@@ -208,7 +211,7 @@ function isBlocked(crrnt_coord, trgt_coord){
         }
     }
     return flase;
-}
+}*/
 
 /*
 isAttacking takes in target square
@@ -246,7 +249,11 @@ function setPieces(){
         var wht_kngt = document.createElement('div');
         var wht_queen = document.createElement('div');
         var blck_king = document.createElement('div');
-        const black_king = new Piece(blck_king, "piece blackking");
+        blck_king.className = "piece blckking";
+        blck_king.id = "black_king";
+        black_king = new Piece();
+        pieces[0] = black_king;
+        black_king.repr.addEventListener("click", black_king.setIsSelected(true));
         //black_king.sayHello();
         
         wht_pwn.className = 'piece whitepawn';
@@ -280,7 +287,7 @@ function setPieces(){
         g0.appendChild(blck_bshp);
         g7.appendChild(wht_kngt);
         e7.appendChild(wht_queen);
-        a6.appendChild(blck_king)
+        a6.appendChild(blck_king);
 }
 
 
@@ -343,6 +350,10 @@ function isSelected(element){
     return false;
 }
 
+/***********************************
+  GAME
+ ***************************************/
+
 /*
     This will be peeled off into a file called main.js
     The following lines are used to simulate actual gameplay
@@ -350,18 +361,22 @@ function isSelected(element){
 createChessBoard();
 setPieces();
 
-
 document.addEventListener('click', function(e){
+    //var piecesvar pieces = [];
     if(e.target.classList.contains('piece')){
-        e.target.id;
-        e.target.setAttribute('isSelected', true);
-        //var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
-        //console.log(typeof parseInt(coordinates[1]));
+        //e.target.id;
+        //e.target.setIsSelected(true);
+        console.log(e.target);
+        var name = e.target.id;
+        pieces[0].setIsSelected(true);
+        console.log(pieces[0].getIsSelected());
+        // var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
+        // console.log(typeof parseInt(coordinates[1]));
     }else{
         //isAttacking(e.target) ? console.log(e.target.children) : console.log('does not');
-        var pieces = this.getElementsByClassName('piece');
+        // = this.getElementsByClassName('piece');
         for(var i = 0; i < pieces.length; i++){
-            if(isSelected(pieces[i])){
+            if(pieces[i].is_selected){
                 var selected_piece = pieces[i];
             }
         }
