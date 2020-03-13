@@ -24,16 +24,18 @@ class Stack{
 
 }
 
-var pieces = [];
-
+var Pieces = [];
+var Squares = [];
 class Piece{
     constructor(name){
         this.name = name;
         this.id = "bk";
-        this.repr = document.createElement('div');
-        //this.class_name = class_name;
+       // this.pos = pos;
+        this.repr = null;
         this.is_selected = false;
-        //this.setAttribute("color", color);
+    }
+    setRepr(repr){
+        this.repr = repr;
     }
     setIsSelected(value){
                 this.is_selected = value;
@@ -45,22 +47,19 @@ class Piece{
 }
 
 class Square{
-    constructor(square, x, y){
-        this.square = square;
+    constructor(x, y, id){
         this.x = x;
         this.y = y;
+        this.id = id;
+        this.repr = document.createElement('td');
         this.isSelected = false;
     }
-
     getIsSelected(){
         return this.isSelected;
     }
-
     setIsSelected(value){
         this.isSelected = value;
     }
-
-
 }
 
 /*
@@ -249,13 +248,9 @@ function setPieces(){
         var wht_kngt = document.createElement('div');
         var wht_queen = document.createElement('div');
         var blck_king = document.createElement('div');
-        blck_king.className = "piece blckking";
+        var blck_king = document.createElement('div');
         blck_king.id = "black_king";
-        black_king = new Piece();
-        pieces[0] = black_king;
-        black_king.repr.addEventListener("click", black_king.setIsSelected(true));
-        //black_king.sayHello();
-        
+        blck_king.className = "piece blckking";
         wht_pwn.className = 'piece whitepawn';
         wht_pwn.id = 'boo';
         wht_pwn.setAttribute("isSelected", false);
@@ -290,6 +285,14 @@ function setPieces(){
         a6.appendChild(blck_king);
 }
 
+function associateReprToPieces(){
+        black_king = new Piece("black_king");
+        Pieces[0] = black_king;
+        //console.log(document.getElementById("black_king"));
+        console.log(black_king.setRepr(document.getElementById("black_king")));
+        black_king.repr.addEventListener("click", black_king.setIsSelected(true));
+        //black_king.sayHello();
+}
 
 function createChessBoard(){    
     var board = document.createElement('table');
@@ -297,19 +300,19 @@ function createChessBoard(){
     for(var i = 0; i < 8; i++){
         var row = document.createElement('tr');
         for(var j = 0;  j < 8; j++){
-            var square = document.createElement('td');
-            var square_object = new Square(square, i, j);
-            square.id = calcSquare(i, j);
-            square.setAttribute('isSelected', false);
-            square.addEventListener('click', function(){
-                square_object.setIsSelected(true);
+            var square = new Square(i, j, calcSquare(i,j));
+            // var square_object = new Square(square, i, j);
+            // square.setAttribute('isSelected', false);
+            square.repr.id = square.id;
+            square.repr.addEventListener('click', function(){
+                square.setIsSelected(true);
             });
             if((j+i)%2 === 0){
-                square.className = "blacksquare";
+                square.repr.className = "blacksquare";
             }else{
-                square.className = "whitesquare";    
+                square.repr.className = "whitesquare";    
             }
-                row.appendChild(square);
+                row.appendChild(square.repr);
                 }
                 board.appendChild(row);
         
@@ -350,6 +353,11 @@ function isSelected(element){
     return false;
 }
 
+function movePiece(piece, target_square){
+    console.log(target_square.id);
+    target_square.appendChild(piece);
+}
+
 /***********************************
   GAME
  ***************************************/
@@ -360,26 +368,33 @@ function isSelected(element){
 */
 createChessBoard();
 setPieces();
+associateReprToPieces();
 
 document.addEventListener('click', function(e){
-    //var piecesvar pieces = [];
     if(e.target.classList.contains('piece')){
         //e.target.id;
         //e.target.setIsSelected(true);
         console.log(e.target);
         var name = e.target.id;
-        pieces[0].setIsSelected(true);
-        console.log(pieces[0].getIsSelected());
+        Pieces[0].setIsSelected(true);
+        console.log(Pieces[0].getIsSelected());
         // var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
         // console.log(typeof parseInt(coordinates[1]));
     }else{
         //isAttacking(e.target) ? console.log(e.target.children) : console.log('does not');
         // = this.getElementsByClassName('piece');
-        for(var i = 0; i < pieces.length; i++){
-            if(pieces[i].is_selected){
-                var selected_piece = pieces[i];
+        for(var i = 0; i < Pieces.length; i++){
+            if(Pieces[i].getIsSelected()){
+                console.log("here");
+               // var selected_piece = Pieces[i];
+               console.log(Pieces[i].repr);
+                e.target.appendChild(Pieces[i].repr);
+                //movePiece(Pieces[i], e.target);
             }
         }
+        //movePiece(selected_piece, selected_piece.)
+
+        /*
                 if(isLegalMove(selected_piece, e.target)){
                     if(e.target.hasChildNodes()){
                         var attacked_piece = e.target.firstChild;
@@ -393,6 +408,6 @@ document.addEventListener('click', function(e){
                     }
                     selected_piece.setAttribute('isSelected', false);
                 }
-
+*/
             }
     }, false);
