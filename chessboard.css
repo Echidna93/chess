@@ -4,25 +4,21 @@
     margin: 20px;
     border: 25px solid #333;
 }
-.blacksquare {
+.square, .whitesquare, .blacksquare{
     float: left;
     width: 50px;
     height: 50px;
-    background-color: #999;
-      font-size:50px;
-    text-align:center;
-    display: table-cell;
-    vertical-align:middle;
-}
-.whitesquare {
-    float: left;
-    width: 50px;
-    height: 50px;
-    background-color: #fff;
     font-size:50px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
+}
+.blacksquare {
+    background-color: #999;
+
+}
+.whitesquare {
+    background-color: #fff;
 }
 .white, .black {
 }

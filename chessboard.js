@@ -27,10 +27,7 @@ class Stack{
 var Pieces = [];
 var Squares = [];
 class Piece{
-    constructor(name){
-        this.name = name;
-        this.id = "bk";
-       // this.pos = pos;
+    constructor(){ 
         this.repr = null;
         this.is_selected = false;
     }
@@ -44,6 +41,20 @@ class Piece{
                 return this.is_selected;
     }
     //move(crrnt_square, trgt_square){}
+}
+
+class King extends Piece{
+    constructor(name){
+        super();
+        this.name = name;
+        this.id = "bk";
+    } 
+    isLegalMove(strt_sqr, trgt_sqr){
+        if(((Math.abs( strt_sqr.x - trgt_sqr.x ) == 1) && (Math.abs(strt_sqr.y - trgt_sqr.y) == 0)) || ((Math.abs(strt_sqr.y - trgt_sqr.y) == 1) && (Math.abs(strt_sqr.x - trgt_sqr.x ) == 0)) || ((Math.abs(strt_sqr.y - trgt_sqr.y ) == 1) && (Math.abs(strt_sqr.x - trgt_sqr.x ) == 1))){
+            return true; 
+        }
+        return false;
+    }
 }
 
 class Square{
@@ -286,10 +297,10 @@ function setPieces(){
 }
 
 function associateReprToPieces(){
-        black_king = new Piece("black_king");
+        black_king = new King("black_king");
         Pieces[0] = black_king;
         //console.log(document.getElementById("black_king"));
-        console.log(black_king.setRepr(document.getElementById("black_king")));
+        black_king.setRepr(document.getElementById("black_king"));
         black_king.repr.addEventListener("click", black_king.setIsSelected(true));
         //black_king.sayHello();
 }
@@ -308,11 +319,12 @@ function createChessBoard(){
                 square.setIsSelected(true);
             });
             if((j+i)%2 === 0){
-                square.repr.className = "blacksquare";
+                square.repr.className = "square blacksquare";
             }else{
-                square.repr.className = "whitesquare";    
+                square.repr.className = "square whitesquare";    
             }
                 row.appendChild(square.repr);
+                Squares.push(square);
                 }
                 board.appendChild(row);
         
@@ -352,7 +364,13 @@ function isSelected(element){
     }
     return false;
 }
-
+function getSquareByID(Squares, id){
+    for(var i = 0; i < Squares.length; i++){
+        if(Squares[i].id == id){
+            return Squares[i]
+        }
+    }
+}
 function movePiece(piece, target_square){
     console.log(target_square.id);
     target_square.appendChild(piece);
@@ -374,21 +392,24 @@ document.addEventListener('click', function(e){
     if(e.target.classList.contains('piece')){
         //e.target.id;
         //e.target.setIsSelected(true);
-        console.log(e.target);
+        //console.log(e.target);
         var name = e.target.id;
         Pieces[0].setIsSelected(true);
-        console.log(Pieces[0].getIsSelected());
+        //console.log(Pieces[0].getIsSelected());
         // var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
         // console.log(typeof parseInt(coordinates[1]));
-    }else{
+    }
+    else{
         //isAttacking(e.target) ? console.log(e.target.children) : console.log('does not');
         // = this.getElementsByClassName('piece');
         for(var i = 0; i < Pieces.length; i++){
             if(Pieces[i].getIsSelected()){
-                console.log("here");
                // var selected_piece = Pieces[i];
-               console.log(Pieces[i].repr);
-                e.target.appendChild(Pieces[i].repr);
+                console.log(Pieces[i].repr);
+                if(Pieces[i].isLegalMove(getSquareByID(Squares, Pieces[i].repr.parentElement.id), getSquareByID(Squares, e.target.id)) ){
+                    //console.log('hitting here')
+                    e.target.appendChild(Pieces[i].repr);
+                }
                 //movePiece(Pieces[i], e.target);
             }
         }
