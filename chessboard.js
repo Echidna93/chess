@@ -301,13 +301,13 @@ function setPieces(){
         wht_kngt.setAttribute("isSelected", "false");
         wht_kngt.setAttribute("color", "white");
         wht_queen.setAttribute("isSelected", false);
+        wht_queen.id = "white_queen";
         wht_queen.setAttribute("color", "white");
         wht_queen.className = "piece whitequeen";
         //blck_king.setAttribute("isSelected", false);
         blck_king.setAttribute("color", "black");
         blck_king.className = "piece blackking";
 
-        
         a0.appendChild(blck_cstl);
         a1.appendChild(blck_pwn);
         a5.appendChild(wht_pwn);
@@ -319,11 +319,13 @@ function setPieces(){
 
 function associateReprToPieces(){
         black_king = new King("black_king", "black");
+        white_queen = new Queen("white queen", "white");
         Pieces[0] = black_king;
-        //console.log(document.getElementById("black_king"));
+        Pieces[1] = white_queen;
         black_king.setRepr(document.getElementById("black_king"));
         black_king.repr.addEventListener("click", black_king.setIsSelected(true));
-        //black_king.sayHello();
+        white_queen.setRepr(document.getElementById("white_queen"));
+        white_queen.repr.addEventListener("click", white_queen.setIsSelected(true));
 }
 
 function createChessBoard(){    
@@ -415,7 +417,9 @@ document.addEventListener('click', function(e){
         //e.target.setIsSelected(true);
         //console.log(e.target);
         var name = e.target.id;
-        Pieces[0].setIsSelected(true);
+        for(var i = 0; i < Pieces.length; i++){
+            Pieces[i].setIsSelected(true);
+        }
         //console.log(Pieces[0].getIsSelected());
         // var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
         // console.log(typeof parseInt(coordinates[1]));
@@ -430,6 +434,7 @@ document.addEventListener('click', function(e){
                 if(Pieces[i].isLegalMove(getSquareByID(Squares, Pieces[i].repr.parentElement.id), getSquareByID(Squares, e.target.id)) ){
                     //console.log('hitting here')
                     e.target.appendChild(Pieces[i].repr);
+                    Pieces[i].setIsSelected(false);
                 }
                 //movePiece(Pieces[i], e.target);
             }
