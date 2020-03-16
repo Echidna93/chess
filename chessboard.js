@@ -27,9 +27,10 @@ class Stack{
 var Pieces = [];
 var Squares = [];
 class Piece{
-    constructor(){ 
+    constructor(color){ 
         this.repr = null;
         this.is_selected = false;
+        this.color = color;
     }
     setRepr(repr){
         this.repr = repr;
@@ -44,8 +45,8 @@ class Piece{
 }
 
 class King extends Piece{
-    constructor(name){
-        super();
+    constructor(name, color){
+        super(color);
         this.name = name;
         this.id = "bk";
     } 
@@ -56,7 +57,28 @@ class King extends Piece{
         return false;
     }
 }
-
+class Queen extends Piece{
+    constructor(name){
+        super();
+        this.name = name;
+        this.id = "q";
+    }
+    isLegalMove(strt_sqr, trgt_sqr){
+        if(((Math.abs(strt_sqr.x - trgt_sqr.x) == 0) || (Math.abs(strt_sqr.y - trgt_sqr.y) == 0)) || (Math.abs(strt_sqr.x - trgt_sqr.x) == Math.abs(strt_sqr.y - trgt_sqr.y))){
+            return true;
+        }
+        return false;
+    }
+}
+/*
+class Queen extends Piece{
+    constructor(name){
+        super();
+        this.name = name;
+        this.id = 
+    }
+}
+*/
 class Square{
     constructor(x, y, id){
         this.x = x;
@@ -232,7 +254,6 @@ return: true if the piece is attacking; false otherwise
 function isAttacking(target_square){
     target_square.hasChildNodes() ? console.log(target_square.id) : console.log('does not');
     if(target_square.hasChildNodes()){
-                console.log('here');
                 return true;    
         }
     return false;
@@ -297,7 +318,7 @@ function setPieces(){
 }
 
 function associateReprToPieces(){
-        black_king = new King("black_king");
+        black_king = new King("black_king", "black");
         Pieces[0] = black_king;
         //console.log(document.getElementById("black_king"));
         black_king.setRepr(document.getElementById("black_king"));
