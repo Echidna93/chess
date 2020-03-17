@@ -213,13 +213,6 @@ function isLegalMove(piece, target_square){
         return false;
 }
 
-function tuplesAreEqual(crrnt_coord, trgt_coord){
-    if(!((crrnt_coord[0]-trgt_coord[0]==0) && (crrnt_coord[1]-trgt_coord[1]==0))){
-        return false;
-    }
-    return true;
-}
-
 /*
     isBlocked a function that determines if path that piece takes is blocked
     arguments: crrnt_ is the starting position of the piece,
@@ -317,38 +310,6 @@ function createChessBoard(){
     document.body.appendChild(board);
 }
 
-
-// calcSquare takes in row and column numbers and converts them
-// to the unique code of the square
-
-function calcSquare(row, column){
-    return String.fromCharCode(97 + column) + row;
-}
-
-
-function selectPiece(piece){
-    piece.setAttribute("isSelected", true);
-}
-
-// takes in no arguments
-// return: bool
-// function determine whether or not there is a piece that is selected
-
-
-function areNoPiecesSelected(){
-    var pieces = document.getElementsByClassName('piece');
-    if(pieces.length > 0){
-        return false;
-    }
-    return true;
-}
-
-function isSelected(element){
-    if(element.getAttribute('isSelected') == 'true'){
-        return true;
-    }
-    return false;
-}
 function getObjectByID(Objects, id){
     for(var i = 0; i < Objects.length; i++){
         if(Objects[i].name == id){
