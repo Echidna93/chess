@@ -291,10 +291,13 @@ function associateReprToPieces(){
 function createChessBoard(){    
     var board = document.createElement('table');
     board.className = 'board';
-    for(var i = 0; i < 8; i++){
+    for(var i = 8; i > 0; i--){
+        var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        var k = 0;
         var row = document.createElement('tr');
-        for(var j = 0;  j < 8; j++){
-            var square = new Square(i, j, calcSquare(i,j));
+        for(var j = 8;  j > 0; j--){
+            //console.log(letters[k] + j);
+            var square = new Square(i, j, letters[k] + i);
             square.repr.id = square.name;
             square.repr.addEventListener('click', function(){
                 square.setIsSelected(true);
@@ -306,6 +309,7 @@ function createChessBoard(){
             }
                 row.appendChild(square.repr);
                 Squares.push(square);
+                k += 1;
                 }
                 board.appendChild(row);
         
