@@ -80,10 +80,10 @@ class Queen extends Piece{
 }
 */
 class Square{
-    constructor(x, y, id){
+    constructor(x, y, name){
         this.x = x;
         this.y = y;
-        this.id = id;
+        this.name = name;
         this.repr = document.createElement('td');
         this.isSelected = false;
     }
@@ -265,67 +265,27 @@ don't create every piece individually
 */
 
 function setPieces(){
-        var a0 = document.getElementById('a0');
-        var a1 = document.getElementById('a1');
-        var a5 = document.getElementById('b5');
-        var g0 = document.getElementById('g0');
-        var g7 = document.getElementById('g7');
-        var e7 = document.getElementById('e7');
-        var a6 = document.getElementById('a6');
-        
-        var blck_pwn = document.createElement('div');
-        var wht_pwn = document.createElement('div');
-        var blck_cstl = document.createElement('div');
-        var blck_bshp = document.createElement('div');
-        var wht_kngt = document.createElement('div');
-        var wht_queen = document.createElement('div');
-        var blck_king = document.createElement('div');
-        var blck_king = document.createElement('div');
-        blck_king.id = "black_king";
-        blck_king.className = "piece blckking";
-        wht_pwn.className = 'piece whitepawn';
-        wht_pwn.id = 'boo';
-        wht_pwn.setAttribute("isSelected", false);
-        wht_pwn.setAttribute("color", "white");
-        blck_cstl.className = 'piece castle';
-        blck_cstl.setAttribute("color", "black");
-        blck_cstl.id = 'booff';
-        blck_cstl.setAttribute("isSelected", false);
-        blck_pwn.setAttribute("color", "black");
-        blck_pwn.className = "piece blackpawn";
-        blck_pwn.setAttribute('isSelected', false);
-        blck_pwn.id = "blck-pwn";
-        blck_bshp.setAttribute('isSelected', false);
-        blck_bshp.setAttribute("color", "black");
-        wht_kngt.className = "piece whiteknight";
-        wht_kngt.setAttribute("isSelected", "false");
-        wht_kngt.setAttribute("color", "white");
-        wht_queen.setAttribute("isSelected", false);
-        wht_queen.id = "white_queen";
-        wht_queen.setAttribute("color", "white");
-        wht_queen.className = "piece whitequeen";
-        //blck_king.setAttribute("isSelected", false);
-        blck_king.setAttribute("color", "black");
-        blck_king.className = "piece blackking";
-
-        a0.appendChild(blck_cstl);
-        a1.appendChild(blck_pwn);
-        a5.appendChild(wht_pwn);
-        g0.appendChild(blck_bshp);
-        g7.appendChild(wht_kngt);
-        e7.appendChild(wht_queen);
-        a6.appendChild(blck_king);
+    e7 = document.getElementById('e7');
+    a6 = document.getElementById('a6');
+    wht_queen = document.createElement('div');
+    blck_king = document.createElement('div');
+    blck_king.id = "black_king";
+    blck_king.className = "piece blackking";
+    wht_queen.id = "white_queen";
+    wht_queen.setAttribute("color", "white");
+    wht_queen.className = "piece whitequeen";
+    blck_king.setAttribute("color", "black");
+    e7.appendChild(wht_queen);
+    a6.appendChild(blck_king);
 }
 
 function associateReprToPieces(){
         black_king = new King("black_king", "black");
-        white_queen = new Queen("white queen", "white");
-        Pieces[0] = black_king;
-        Pieces[1] = white_queen;
+        white_queen = new Queen("white_queen", "white");
         black_king.setRepr(document.getElementById("black_king"));
-        black_king.repr.addEventListener("click", black_king.setIsSelected(true));
         white_queen.setRepr(document.getElementById("white_queen"));
-        white_queen.repr.addEventListener("click", white_queen.setIsSelected(true));
+        Pieces.push(black_king);
+        Pieces.push(white_queen);
 }
 
 function createChessBoard(){    
@@ -335,9 +295,7 @@ function createChessBoard(){
         var row = document.createElement('tr');
         for(var j = 0;  j < 8; j++){
             var square = new Square(i, j, calcSquare(i,j));
-            // var square_object = new Square(square, i, j);
-            // square.setAttribute('isSelected', false);
-            square.repr.id = square.id;
+            square.repr.id = square.name;
             square.repr.addEventListener('click', function(){
                 square.setIsSelected(true);
             });
@@ -387,15 +345,25 @@ function isSelected(element){
     }
     return false;
 }
-function getSquareByID(Squares, id){
-    for(var i = 0; i < Squares.length; i++){
-        if(Squares[i].id == id){
-            return Squares[i]
+function getObjectByID(Objects, id){
+    for(var i = 0; i < Objects.length; i++){
+        if(Objects[i].name == id){
+            return Objects[i];
+        }
+    }
+}
+function getObjectByIsSelected(Objects){
+    for(var i = 0; i < Objects.length; i++){
+       // console.log(Objects[i]);
+        //console.log(Objects[i+1]);
+        if(Objects[i].getIsSelected()){
+           // console.log(Objects[i]);
+            return Objects[i];
         }
     }
 }
 function movePiece(piece, target_square){
-    console.log(target_square.id);
+    //console.log(target_square.id);
     target_square.appendChild(piece);
 }
 
@@ -413,32 +381,29 @@ associateReprToPieces();
 
 document.addEventListener('click', function(e){
     if(e.target.classList.contains('piece')){
-        //e.target.id;
-        //e.target.setIsSelected(true);
-        //console.log(e.target);
         var name = e.target.id;
-        for(var i = 0; i < Pieces.length; i++){
-            Pieces[i].setIsSelected(true);
-        }
-        //console.log(Pieces[0].getIsSelected());
-        // var coordinates = [e.target.parentElement.getAttribute('rownum'), e.target.parentElement.getAttribute('colnum')];
-        // console.log(typeof parseInt(coordinates[1]));
+        object_to_select = getObjectByID(Pieces, name);
+        object_to_select.setIsSelected(true);
+        console.log(object_to_select);
     }
     else{
-        //isAttacking(e.target) ? console.log(e.target.children) : console.log('does not');
-        // = this.getElementsByClassName('piece');
-        for(var i = 0; i < Pieces.length; i++){
-            if(Pieces[i].getIsSelected()){
-               // var selected_piece = Pieces[i];
-                console.log(Pieces[i].repr);
-                if(Pieces[i].isLegalMove(getSquareByID(Squares, Pieces[i].repr.parentElement.id), getSquareByID(Squares, e.target.id)) ){
-                    //console.log('hitting here')
-                    e.target.appendChild(Pieces[i].repr);
-                    Pieces[i].setIsSelected(false);
+            selected_piece = getObjectByIsSelected(Pieces);
+            console.log(selected_piece.repr.parentElement.id);
+            console.log(e.target.id);
+            if(selected_piece.isLegalMove(getObjectByID(Squares, selected_piece.repr.parentElement.id), getObjectByID(Squares, e.target.id))){          
+                    if(e.target.hasChildNodes()){
+                        var attacked_piece = e.target.firstChild;
+                        attacked_piece.remove();
+                        e.target.appendChild(selected_piece.repr);
+                        selected_piece.setIsSelected(false);
+                    }else{
+
+                        e.target.appendChild(selected_piece.repr);
+                        selected_piece.setIsSelected(false);
+                    }
                 }
                 //movePiece(Pieces[i], e.target);
-            }
-        }
+            }//selected_piece.setIsSelected(false);
         //movePiece(selected_piece, selected_piece.)
 
         /*
@@ -456,5 +421,5 @@ document.addEventListener('click', function(e){
                     selected_piece.setAttribute('isSelected', false);
                 }
 */
-            }
+            
     }, false);
