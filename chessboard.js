@@ -5,6 +5,10 @@
 TODO: create square class, squares will have an x and y component as well
 as a row signifier (i.e. a,b,c...h)
 */
+
+var Pieces = [];
+var Squares = [];
+
 class Stack{
     constructor(){
         this.items = [];
@@ -24,8 +28,6 @@ class Stack{
 
 }
 
-var Pieces = [];
-var Squares = [];
 class Piece{
     constructor(color){ 
         this.repr = null;
@@ -48,7 +50,6 @@ class King extends Piece{
     constructor(name, color){
         super(color);
         this.name = name;
-        this.id = "bk";
     } 
     isLegalMove(strt_sqr, trgt_sqr){
         if(((Math.abs( strt_sqr.x - trgt_sqr.x ) == 1) && (Math.abs(strt_sqr.y - trgt_sqr.y) == 0)) || ((Math.abs(strt_sqr.y - trgt_sqr.y) == 1) && (Math.abs(strt_sqr.x - trgt_sqr.x ) == 0)) || ((Math.abs(strt_sqr.y - trgt_sqr.y ) == 1) && (Math.abs(strt_sqr.x - trgt_sqr.x ) == 1))){
@@ -61,7 +62,6 @@ class Queen extends Piece{
     constructor(name){
         super();
         this.name = name;
-        this.id = "q";
     }
     isLegalMove(strt_sqr, trgt_sqr){
         if(((Math.abs(strt_sqr.x - trgt_sqr.x) == 0) || (Math.abs(strt_sqr.y - trgt_sqr.y) == 0)) || (Math.abs(strt_sqr.x - trgt_sqr.x) == Math.abs(strt_sqr.y - trgt_sqr.y))){
