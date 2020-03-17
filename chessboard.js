@@ -359,14 +359,13 @@ document.addEventListener('click', function(e){
                     if(e.target.hasChildNodes()){
                         var attacked_piece = e.target.firstChild;
                         attacked_piece.remove();
-                        e.target.appendChild(selected_piece.repr);
-                        selected_piece.setIsSelected(false);
-                    }else{
-
-                        e.target.appendChild(selected_piece.repr);
-                        selected_piece.setIsSelected(false);
                     }
+                    e.target.appendChild(selected_piece.repr);
+                    selected_piece.setIsSelected(false);
                 }
+                // in the case where an illegal move is made always set isSelected to false
+                // regardless of the outcome
+                selected_piece.setIsSelected(false);
                 //movePiece(Pieces[i], e.target);
             }//selected_piece.setIsSelected(false);
         //movePiece(selected_piece, selected_piece.)
