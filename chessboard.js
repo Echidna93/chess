@@ -75,11 +75,12 @@ class Queen extends Piece{
 }
 
 class Square{
-    constructor(x, y, name){
+    constructor(x, y, name, repr){
         this.x = x;
         this.y = y;
+        this.v = [x, y];
         this.name = name;
-        this.repr = document.createElement('td');
+        this.repr = repr;
         this.isSelected = false;
     }
     getIsSelected(){
@@ -102,13 +103,13 @@ and return a direction vector
 function getDirectionVector(strt_sqr, trgt_sqr){
     // assume we have converted the row and col values that are assigned to
     // DOM elements to coordinate vectors
-    console.log("coord for start square: " + "(" + strt_sqr.x + ", " + strt_sqr.y + ")");
-    console.log("coord for target square: " + "(" + trgt_sqr.x + ", " + trgt_sqr.y + ")");
+    //console.log("coord for start square: " + "(" + strt_sqr.x + ", " + strt_sqr.y + ")");
+    //console.log("coord for target square: " + "(" + trgt_sqr.x + ", " + trgt_sqr.y + ")");
 
     x = trgt_sqr.x - strt_sqr.x;
-    console.log("x direction: " + strt_sqr.x + "-" + trgt_sqr.x);
+    //console.log("x direction: " + strt_sqr.x + "-" + trgt_sqr.x);
     y = trgt_sqr.y - strt_sqr.y;
-    console.log("y direction: " + strt_sqr.y + "-" + trgt_sqr.y);
+    //console.log("y direction: " + strt_sqr.y + "-" + trgt_sqr.y);
     if(x>=1 && y>1){
         return [1,1];
     }
@@ -129,6 +130,9 @@ function getDirectionVector(strt_sqr, trgt_sqr){
     }
     else if(x<0 && y==0){
         return [-1, 0]
+    }
+    else if(x==0 && y<0){
+        return [0, -1];
     }
     return [0,0];
 }
@@ -225,30 +229,29 @@ function isBlocked(strt_sqr, trgt_sqr){
     // only run this for non-knight piecies
     var direction_vector =  getDirectionVector(strt_sqr, trgt_sqr);
     console.log("direction vector: " + direction_vector);
+    console.log("target square : " + trgt_sqr.name);
+    console.log("start square : " + strt_sqr.name);
     crnt_tuple = [];
     crnt_tuple[0] = strt_sqr.x;
     crnt_tuple[1] = strt_sqr.y;
     trgt = [];
     trgt[0] = trgt_sqr.x;
     trgt[1] = trgt_sqr.y;
-    var i = 0;
     while(!(tuplesAreEqual(crnt_tuple, trgt))){
-        crnt_tuple[0] += direction_vector[0];
-        crnt_tuple[1] += direction_vector[1];
         crrnt_sqr = Board[[x],[y]];
         Board[[crnt_tuple[0]],[crnt_tuple[1]]];
-        //console.log(Board[[crnt_tuple[0]],[crnt_tuple[1]]])
-        //console.log("current: " + crnt_tuple);
-        //console.log("target: " + trgt);
-        i += 1;
         // if the element at crrnt_coord contains a child Node (i.e. a piece) and the crrnt_coord is not the trgt_coord
         // if we are in the target coordinate and the piece is of the opposite color return false--consider it an attack
         // return true
-        if((Board[[crnt_tuple[0]],[crnt_tuple[1]]].hasChildNodes)){
+        //console.log("current tupe 0 : " + crnt_tuple[0]);
+        //console.log("current tupe 1 : " + crnt_tuple[1]);
+        
+        crnt_tuple[0] += direction_vector[0];
+        crnt_tuple[1] += direction_vector[1];
+        crnt_square = getSquareByV(Squares, [crnt_tuple[0], crnt_tuple[1]]);
+        console.log("debugging : " + crnt_square.name);
+        if(crnt_square.repr.hasChildNodes()){
             return true;
-        }
-        if(i == 10){
-            break;
         }
     }
     return false;
@@ -280,6 +283,14 @@ function isAttacking(target_square){
                 return true;    
         }
     return false;
+}
+
+function getSquareByV(Squares, vector){
+    for(var i = 0; i < Squares.length; i++){
+        if(tuplesAreEqual(Squares[i].v, vector)){
+            return Squares[i];
+        }
+    }
 }
 
 /*
@@ -329,19 +340,20 @@ function createChessBoard(){
         var row = document.createElement('tr');
         for(var j = 1;  j < 9; j++){
             //console.log(letters[k] + j);
-            var square = new Square(i, j, letters[k] + (i));
-            square.repr.id = square.name;
-            square.repr.addEventListener('click', function(){
-                square.setIsSelected(true);
-            });
+            square = document.createElement('td');
+            square.id = letters[k] + i;
             if((j+i) % 2 === 0){
-                square.repr.className = "square blacksquare";
+                square.className = "square blacksquare";
             }else{
-                square.repr.className = "square whitesquare";    
+                square.className = "square whitesquare";    
             }
-                row.appendChild(square.repr);
-                Squares.push(square);
-                Board[[k],[j]] = square;
+                row.appendChild(square);
+                var square_object = new Square(i, j, letters[k] + (i), square);
+                square.addEventListener('click', function(){
+                    square_object.setIsSelected(true);
+                });
+                Squares.push(square_object);
+                Board[[i],[j]] = square_object;
                 k += 1;
                
             }
@@ -396,7 +408,7 @@ document.addEventListener('click', function(e){
         object_to_select = getObjectByID(Pieces, name);
         object_to_select.setIsSelected(true);
         //console.log(object_to_select);
-        console.log(Board);
+       // console.log(Board[[7],[5]].name);
     }
     else{
             selected_piece = getObjectByIsSelected(Pieces);
@@ -404,7 +416,7 @@ document.addEventListener('click', function(e){
             //console.log(e.target.id);
             strt_sqr = getObjectByID(Squares, selected_piece.repr.parentElement.id);
             trgt_sqr = getObjectByID(Squares, e.target.id);
-            if(selected_piece.isLegalMove(strt_sqr, trgt_sqr) & !(isBlocked(strt_sqr, trgt_sqr))){          
+            if(selected_piece.isLegalMove(strt_sqr, trgt_sqr) && !(isBlocked(strt_sqr, trgt_sqr))){          
                     if(e.target.hasChildNodes()){
                         var attacked_piece = getObjectByID(Pieces, e.target.firstChild.id);
                         //console.log(attacked_piece);
@@ -423,21 +435,4 @@ document.addEventListener('click', function(e){
                 //movePiece(Pieces[i], e.target);
             }//selected_piece.setIsSelected(false);
         //movePiece(selected_piece, selected_piece.)
-
-        /*
-                if(isLegalMove(selected_piece, e.target)){
-                    if(e.target.hasChildNodes()){
-                        var attacked_piece = e.target.firstChild;
-                        console.log(e.target.id);
-                        attacked_piece.remove();
-                        e.target.appendChild(selected_piece);
-                    }else{
-                        e.target.appendChild(selected_piece);
-                        //console.log('not attacking')
-                        //pieces[i].setAttribute('isSelected', false);
-                    }
-                    selected_piece.setAttribute('isSelected', false);
-                }
-*/
-            
     }, false);
