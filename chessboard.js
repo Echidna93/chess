@@ -102,8 +102,13 @@ and return a direction vector
 function getDirectionVector(strt_sqr, trgt_sqr){
     // assume we have converted the row and col values that are assigned to
     // DOM elements to coordinate vectors
-    x = strt_sqr.x - trgt_sqr.x;
-    y = strt_sqr.y - trgt_sqr.y;
+    console.log("coord for start square: " + "(" + strt_sqr.x + ", " + strt_sqr.y + ")");
+    console.log("coord for target square: " + "(" + trgt_sqr.x + ", " + trgt_sqr.y + ")");
+
+    x = trgt_sqr.x - strt_sqr.x;
+    console.log("x direction: " + strt_sqr.x + "-" + trgt_sqr.x);
+    y = trgt_sqr.y - strt_sqr.y;
+    console.log("y direction: " + strt_sqr.y + "-" + trgt_sqr.y);
     if(x>=1 && y>1){
         return [1,1];
     }
@@ -139,7 +144,7 @@ returns false if not
 function isLegalMove(piece, target_square){
     // get current position of the chess piece as a tuple of integers
     var crrnt_coord = [parseInt(piece.parentElement.getAttribute('row')), parseInt(piece.parentElement.getAttribute('col'))];
-    console.log(target_square instanceof Square);
+   // console.log(target_square instanceof Square);
     // get target square coordinates as a tuple of integers
     var trgt_coord = [parseInt(target_square.getAttribute('row')), parseInt(target_square.getAttribute('col'))];
     if(isAttacking(target_square)){
@@ -221,24 +226,29 @@ function isBlocked(strt_sqr, trgt_sqr){
     var direction_vector =  getDirectionVector(strt_sqr, trgt_sqr);
     console.log("direction vector: " + direction_vector);
     crnt_tuple = [];
-    crnt_tuple[0] = strt_sqr.y;
-    crnt_tuple[1] = strt_sqr.x;
+    crnt_tuple[0] = strt_sqr.x;
+    crnt_tuple[1] = strt_sqr.y;
     trgt = [];
-    trgt[0] = trgt_sqr.y;
-    trgt[1] = trgt_sqr.x;
+    trgt[0] = trgt_sqr.x;
+    trgt[1] = trgt_sqr.y;
+    var i = 0;
     while(!(tuplesAreEqual(crnt_tuple, trgt))){
-        crnt_tuple[0] += direction_vector[1];
-        crnt_tuple[1] += direction_vector[0];
+        crnt_tuple[0] += direction_vector[0];
+        crnt_tuple[1] += direction_vector[1];
         crrnt_sqr = Board[[x],[y]];
         Board[[crnt_tuple[0]],[crnt_tuple[1]]];
-        console.log(Board[[crnt_tuple[0]],[crnt_tuple[1]]])
-        console.log("current: " + crnt_tuple);
-        console.log("target: " + trgt);
+        //console.log(Board[[crnt_tuple[0]],[crnt_tuple[1]]])
+        //console.log("current: " + crnt_tuple);
+        //console.log("target: " + trgt);
+        i += 1;
         // if the element at crrnt_coord contains a child Node (i.e. a piece) and the crrnt_coord is not the trgt_coord
         // if we are in the target coordinate and the piece is of the opposite color return false--consider it an attack
         // return true
         if((Board[[crnt_tuple[0]],[crnt_tuple[1]]].hasChildNodes)){
             return true;
+        }
+        if(i == 10){
+            break;
         }
     }
     return false;
@@ -317,7 +327,7 @@ function createChessBoard(){
         var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         var k = 0;
         var row = document.createElement('tr');
-        for(var j = 0;  j < 8; j++){
+        for(var j = 1;  j < 9; j++){
             //console.log(letters[k] + j);
             var square = new Square(i, j, letters[k] + (i));
             square.repr.id = square.name;
@@ -331,8 +341,8 @@ function createChessBoard(){
             }
                 row.appendChild(square.repr);
                 Squares.push(square);
+                Board[[k],[j]] = square;
                 k += 1;
-                Board[[i],[j]] = square;
                
             }
                 //Rows[i].push(row);
@@ -386,18 +396,18 @@ document.addEventListener('click', function(e){
         object_to_select = getObjectByID(Pieces, name);
         object_to_select.setIsSelected(true);
         //console.log(object_to_select);
-        console.log(Board[[0],[0]]);
+        console.log(Board);
     }
     else{
             selected_piece = getObjectByIsSelected(Pieces);
-            console.log(selected_piece.repr.parentElement.id);
-            console.log(e.target.id);
+            //console.log(selected_piece.repr.parentElement.id);
+            //console.log(e.target.id);
             strt_sqr = getObjectByID(Squares, selected_piece.repr.parentElement.id);
             trgt_sqr = getObjectByID(Squares, e.target.id);
             if(selected_piece.isLegalMove(strt_sqr, trgt_sqr) & !(isBlocked(strt_sqr, trgt_sqr))){          
                     if(e.target.hasChildNodes()){
                         var attacked_piece = getObjectByID(Pieces, e.target.firstChild.id);
-                        console.log(attacked_piece);
+                        //console.log(attacked_piece);
                         // verify that we aren't attacking piece of the same color
                         if(selected_piece.color !== attacked_piece.color){
                             attacked_piece.repr.remove();
