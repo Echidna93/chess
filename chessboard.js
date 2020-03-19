@@ -8,6 +8,9 @@ as a row signifier (i.e. a,b,c...h)
 
 var Pieces = [];
 var Squares = [];
+// Board will hold the squares
+var Board = [[],[]];
+var Rows = [];
 
 class Stack{
     constructor(){
@@ -70,15 +73,7 @@ class Queen extends Piece{
         return false;
     }
 }
-/*
-class Queen extends Piece{
-    constructor(name){
-        super();
-        this.name = name;
-        this.id = 
-    }
-}
-*/
+
 class Square{
     constructor(x, y, name){
         this.x = x;
@@ -104,11 +99,11 @@ subtract the x and y values for each coordinate
 and return a direction vector
 */
 
-function getDirectionVector(crrnt_coord, trgt_coord){
+function getDirectionVector(strt_sqr, trgt_sqr){
     // assume we have converted the row and col values that are assigned to
     // DOM elements to coordinate vectors
-    x = crrnt_coord[0] - trgt_coord[0];
-    y = crrnt_coord[1] - trgt_coord[1];
+    x = strt_sqr.x - trgt_sqr.x;
+    y = strt_sqr.y - trgt_sqr.y;
     if(x>=1 && y>1){
         return [1,1];
     }
@@ -132,8 +127,6 @@ function getDirectionVector(crrnt_coord, trgt_coord){
     }
     return [0,0];
 }
-
-
 
 /*
 legalMove takes in a start: row, column; end: row, col 
@@ -220,23 +213,50 @@ function isLegalMove(piece, target_square){
     returns true if blocked (i.e. another piece is between the crrnt_sqr and trgt sqr)
     we only want to call this method if the 
 */
-/*
-function isBlocked(crrnt_coord, trgt_coord){
+
+
+function isBlocked(strt_sqr, trgt_sqr){
     // get direction vector tuple
     // only run this for non-knight piecies
-    var direction_vector =  getDirectionVector(crrnt_coord, trgt_coord);
-    while(!(tuplesAreEqual(crrnt_coord, trgt_coord))){
-        crrnt_coord[0] += direction_vector[0];
-        crrnt_coord[1] += direction_vector[1];
+    var direction_vector =  getDirectionVector(strt_sqr, trgt_sqr);
+    console.log("direction vector: " + direction_vector);
+    crnt_tuple = [];
+    crnt_tuple[0] = strt_sqr.y;
+    crnt_tuple[1] = strt_sqr.x;
+    trgt = [];
+    trgt[0] = trgt_sqr.y;
+    trgt[1] = trgt_sqr.x;
+    while(!(tuplesAreEqual(crnt_tuple, trgt))){
+        crnt_tuple[0] += direction_vector[1];
+        crnt_tuple[1] += direction_vector[0];
+        crrnt_sqr = Board[[x],[y]];
+        Board[[crnt_tuple[0]],[crnt_tuple[1]]];
+        console.log(Board[[crnt_tuple[0]],[crnt_tuple[1]]])
+        console.log("current: " + crnt_tuple);
+        console.log("target: " + trgt);
         // if the element at crrnt_coord contains a child Node (i.e. a piece) and the crrnt_coord is not the trgt_coord
         // if we are in the target coordinate and the piece is of the opposite color return false--consider it an attack
         // return true
-        if(tuplesAreEqual(crrnt_coord, trgt_coord) && ){
-            return 
+        if((Board[[crnt_tuple[0]],[crnt_tuple[1]]].hasChildNodes)){
+            return true;
         }
     }
-    return flase;
-}*/
+    return false;
+}
+
+/*
+    Function determines whether or not two given tuples are equal,
+    primarily used to determine whether or not a pieces path is blocked
+*/
+
+function tuplesAreEqual(strt, trgt){
+    if((Math.abs(strt[0]-trgt[0])==0) && (Math.abs(strt[1]-trgt[1]==0))){
+        return true;
+    }
+    return false;
+}
+
+
 
 /*
 isAttacking takes in target square
@@ -260,42 +280,51 @@ don't create every piece individually
 function setPieces(){
     e7 = document.getElementById('e7');
     a6 = document.getElementById('a6');
+    e6 = document.getElementById('e6');
     wht_queen = document.createElement('div');
+    wht_queen2 = document.createElement('div');
     blck_king = document.createElement('div');
     blck_king.id = "black_king";
     blck_king.className = "piece blackking";
+    wht_queen2.id = "white_queen2";
     wht_queen.id = "white_queen";
+    wht_queen2.setAttribute("color", "white");
     wht_queen.setAttribute("color", "white");
     wht_queen.className = "piece whitequeen";
+    wht_queen2.className = "piece whitequeen";
     blck_king.setAttribute("color", "black");
     e7.appendChild(wht_queen);
     a6.appendChild(blck_king);
+    e6.appendChild(wht_queen2);
 }
 
 function associateReprToPieces(){
-        black_king = new King("black_king", "black");
-        white_queen = new Queen("white_queen", "white");
-        black_king.setRepr(document.getElementById("black_king"));
-        white_queen.setRepr(document.getElementById("white_queen"));
-        Pieces.push(black_king);
-        Pieces.push(white_queen);
+    black_king = new King("black_king", "black");
+    white_queen = new Queen("white_queen", "white");
+    white_queen2 = new Queen("white_queen2", "white");
+    black_king.setRepr(document.getElementById("black_king"));
+    white_queen.setRepr(document.getElementById("white_queen"));
+    white_queen2.setRepr(document.getElementById("white_queen2"));
+    Pieces.push(black_king);
+    Pieces.push(white_queen);
+    Pieces.push(white_queen2);
 }
 
 function createChessBoard(){    
     var board = document.createElement('table');
     board.className = 'board';
-    for(var i = 8; i > 0; i--){
+    for(var i = 8; i >= 1; i--){
         var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         var k = 0;
         var row = document.createElement('tr');
-        for(var j = 8;  j > 0; j--){
+        for(var j = 0;  j < 8; j++){
             //console.log(letters[k] + j);
-            var square = new Square(i, j, letters[k] + i);
+            var square = new Square(i, j, letters[k] + (i));
             square.repr.id = square.name;
             square.repr.addEventListener('click', function(){
                 square.setIsSelected(true);
             });
-            if((j+i)%2 === 0){
+            if((j+i) % 2 === 0){
                 square.repr.className = "square blacksquare";
             }else{
                 square.repr.className = "square whitesquare";    
@@ -303,10 +332,17 @@ function createChessBoard(){
                 row.appendChild(square.repr);
                 Squares.push(square);
                 k += 1;
-                }
-                board.appendChild(row);
-        
+                Board[[i],[j]] = square;
+               
             }
+                //Rows[i].push(row);
+                board.appendChild(row);
+                
+            }
+            /*
+            for(h = Rows.length; h > 0; h--){
+                        board.appendChild();
+            }*/
     document.body.appendChild(board);
 }
 
@@ -349,16 +385,24 @@ document.addEventListener('click', function(e){
         var name = e.target.id;
         object_to_select = getObjectByID(Pieces, name);
         object_to_select.setIsSelected(true);
-        console.log(object_to_select);
+        //console.log(object_to_select);
+        console.log(Board[[0],[0]]);
     }
     else{
             selected_piece = getObjectByIsSelected(Pieces);
             console.log(selected_piece.repr.parentElement.id);
             console.log(e.target.id);
-            if(selected_piece.isLegalMove(getObjectByID(Squares, selected_piece.repr.parentElement.id), getObjectByID(Squares, e.target.id))){          
+            strt_sqr = getObjectByID(Squares, selected_piece.repr.parentElement.id);
+            trgt_sqr = getObjectByID(Squares, e.target.id);
+            if(selected_piece.isLegalMove(strt_sqr, trgt_sqr) & !(isBlocked(strt_sqr, trgt_sqr))){          
                     if(e.target.hasChildNodes()){
-                        var attacked_piece = e.target.firstChild;
-                        attacked_piece.remove();
+                        var attacked_piece = getObjectByID(Pieces, e.target.firstChild.id);
+                        console.log(attacked_piece);
+                        // verify that we aren't attacking piece of the same color
+                        if(selected_piece.color !== attacked_piece.color){
+                            attacked_piece.repr.remove();
+                            e.target.appendChild(selected_piece.repr);
+                        }
                     }
                     e.target.appendChild(selected_piece.repr);
                     selected_piece.setIsSelected(false);
