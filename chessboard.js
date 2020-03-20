@@ -73,6 +73,30 @@ class Queen extends Piece{
         return false;
     }
 }
+class Pawn extends Piece{
+    constructor(name){
+        super();
+        this.name = name;
+    }
+    isLegalMove(strt_sqr, trgt_sqr){
+        if(!(isAttacking(trgt_sqr))){
+            if(this.color == 'white'){
+                if((strt_sqr.x == trgt_sqr.x) && ((trgt_coord[1] - crrnt_coord[1]) == 1)){
+                    return true;
+            }
+        }
+        else{
+                console.log('here');
+                if((strt_sqr.x == trgt_sqr.x) && ((trgt_sqr.y - strt_sqr.y) == -1)){
+                    return true;
+                    }
+                }
+            }
+        else{
+            return false;
+        }
+    }
+}
 
 class Square{
     constructor(x, y, name, repr){
@@ -110,13 +134,13 @@ function getDirectionVector(strt_sqr, trgt_sqr){
     //console.log("x direction: " + strt_sqr.x + "-" + trgt_sqr.x);
     y = trgt_sqr.y - strt_sqr.y;
     //console.log("y direction: " + strt_sqr.y + "-" + trgt_sqr.y);
-    if(x>=1 && y>1){
+    if(x>=1 && y>=1){
         return [1,1];
     }
-    else if (x>0 && y==0){
+    else if (x>=1 && y==0){
         return [1,0];
     }
-    else if (x>0 && y<0){
+    else if (x>=1 && y<0){
         return [1,-1];
     }
     else if (x==0 && y>0){
@@ -279,8 +303,8 @@ return: true if the piece is attacking; false otherwise
 */
 
 function isAttacking(target_square){
-    target_square.hasChildNodes() ? console.log(target_square.id) : console.log('does not');
-    if(target_square.hasChildNodes()){
+    target_square.repr.hasChildNodes() ? console.log(target_square.name) : console.log('does not');
+    if(target_square.repr.hasChildNodes()){
                 return true;    
         }
     return false;
@@ -301,35 +325,44 @@ don't create every piece individually
 
 function setPieces(){
     e7 = document.getElementById('e7');
+    e2 = document.getElementById('e2');
     a6 = document.getElementById('a6');
     e6 = document.getElementById('e6');
     wht_queen = document.createElement('div');
     wht_queen2 = document.createElement('div');
+    black_pawn = document.createElement('div');
     blck_king = document.createElement('div');
     blck_king.id = "black_king";
+    black_pawn.id = "black_pawn";
     blck_king.className = "piece blackking";
     wht_queen2.id = "white_queen2";
     wht_queen.id = "white_queen";
+    black_pawn.className = "piece blackpawn";
     wht_queen2.setAttribute("color", "white");
     wht_queen.setAttribute("color", "white");
+    black_pawn.setAttribute("color", "black");
     wht_queen.className = "piece whitequeen";
     wht_queen2.className = "piece whitequeen";
     blck_king.setAttribute("color", "black");
     e7.appendChild(wht_queen);
     a6.appendChild(blck_king);
     e6.appendChild(wht_queen2);
+    e2.appendChild(black_pawn);
 }
 
 function associateReprToPieces(){
     black_king = new King("black_king", "black");
     white_queen = new Queen("white_queen", "white");
     white_queen2 = new Queen("white_queen2", "white");
+    black_pawn  = new Pawn("black_pawn", "black");
     black_king.setRepr(document.getElementById("black_king"));
     white_queen.setRepr(document.getElementById("white_queen"));
     white_queen2.setRepr(document.getElementById("white_queen2"));
+    black_pawn.setRepr(document.getElementById("black_pawn"));
     Pieces.push(black_king);
     Pieces.push(white_queen);
     Pieces.push(white_queen2);
+    Pieces.push(black_pawn);
 }
 
 function createChessBoard(){    
@@ -348,7 +381,7 @@ function createChessBoard(){
                 square.className = "square whitesquare";    
             }
                 row.appendChild(square);
-                var square_object = new Square(i, j, letters[k] + (i), square);
+                var square_object = new Square(j, i, letters[k] + (i), square);
                 square.addEventListener('click', function(){
                     square_object.setIsSelected(true);
                 });
@@ -417,13 +450,10 @@ document.addEventListener('click', function(e){
                         if(selected_piece.color !== attacked_piece.color){
                             attacked_piece.repr.remove();
                             e.target.appendChild(selected_piece.repr);
-                        }else{
-                            selected_piece.setIsSelected(false);
                         }
                     }
                     else{
                         e.target.appendChild(selected_piece.repr);
-                        selected_piece.setIsSelected(false);
                     }
                 }
                 selected_piece.setIsSelected(false);
