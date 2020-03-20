@@ -74,27 +74,38 @@ class Queen extends Piece{
     }
 }
 class Pawn extends Piece{
-    constructor(name){
-        super();
+    constructor(name, color){
+        super(color);
         this.name = name;
     }
     isLegalMove(strt_sqr, trgt_sqr){
+        console.log("this is the color of the piece " + this.color);
         if(!(isAttacking(trgt_sqr))){
-            if(this.color == 'white'){
-                if((strt_sqr.x == trgt_sqr.x) && ((trgt_coord[1] - crrnt_coord[1]) == 1)){
+            if(this.color == "white"){
+                if((strt_sqr.x == trgt_sqr.x) && ((trgt_sqr.y - strt_sqr.y) == 1)){
                     return true;
             }
         }
         else{
-                console.log('here');
                 if((strt_sqr.x == trgt_sqr.x) && ((trgt_sqr.y - strt_sqr.y) == -1)){
                     return true;
                     }
                 }
             }
         else{
-            return false;
+            if(this.color == "white"){
+                console.log('into the white');
+                if((Math.abs(trgt_sqr.x - strt_sqr.x) == 1)){
+                    console.log('here');
+                    return true;
+                }
+            }else{
+                if((Math.abs(trgt_sqr.x - strt_sqr.x) == 1) && ((trgt_sqr.y - strt_sqr) == -1)){
+                    return true;
+                }
+            }
         }
+        return false;
     }
 }
 
@@ -303,8 +314,9 @@ return: true if the piece is attacking; false otherwise
 */
 
 function isAttacking(target_square){
-    target_square.repr.hasChildNodes() ? console.log(target_square.name) : console.log('does not');
+    //target_square.repr.hasChildNodes() ? console.log(target_square.name) : console.log('does not');
     if(target_square.repr.hasChildNodes()){
+                //console.log("is attacking works");
                 return true;    
         }
     return false;
@@ -328,29 +340,46 @@ function setPieces(){
     e2 = document.getElementById('e2');
     a6 = document.getElementById('a6');
     e6 = document.getElementById('e6');
+    d1 = document.getElementById('d1');
+    f1 = document.getElementById('f1');
+
     wht_queen = document.createElement('div');
     wht_queen2 = document.createElement('div');
     black_pawn = document.createElement('div');
+    white_pawn = document.createElement('div');
+    white_pawn2 = document.createElement('div');
     blck_king = document.createElement('div');
+
     blck_king.id = "black_king";
     black_pawn.id = "black_pawn";
     blck_king.className = "piece blackking";
     wht_queen2.id = "white_queen2";
     wht_queen.id = "white_queen";
+    white_pawn.id = "white_pawn";
+    white_pawn2.id = "white_pawn2";
+
     black_pawn.className = "piece blackpawn";
     wht_queen2.setAttribute("color", "white");
+    white_pawn.setAttribute("color", "white");
+    white_pawn2.setAttribute("color", "white");
     wht_queen.setAttribute("color", "white");
     black_pawn.setAttribute("color", "black");
     wht_queen.className = "piece whitequeen";
     wht_queen2.className = "piece whitequeen";
+    white_pawn.className = "piece whitepawn";
+    white_pawn2.className = "piece whitepawn";
     blck_king.setAttribute("color", "black");
     e7.appendChild(wht_queen);
     a6.appendChild(blck_king);
     e6.appendChild(wht_queen2);
     e2.appendChild(black_pawn);
+    f1.appendChild(white_pawn2);
+    d1.appendChild(white_pawn);
 }
 
 function associateReprToPieces(){
+    white_pawn = new Pawn("white_pawn", "white");
+    white_pawn2 = new Pawn("white_pawn2", "white");
     black_king = new King("black_king", "black");
     white_queen = new Queen("white_queen", "white");
     white_queen2 = new Queen("white_queen2", "white");
@@ -359,10 +388,15 @@ function associateReprToPieces(){
     white_queen.setRepr(document.getElementById("white_queen"));
     white_queen2.setRepr(document.getElementById("white_queen2"));
     black_pawn.setRepr(document.getElementById("black_pawn"));
+    white_pawn.setRepr(document.getElementById("white_pawn"));
+    white_pawn2.setRepr(document.getElementById("white_pawn2"));
+
     Pieces.push(black_king);
     Pieces.push(white_queen);
     Pieces.push(white_queen2);
     Pieces.push(black_pawn);
+    Pieces.push(white_pawn);
+    Pieces.push(white_pawn2);
 }
 
 function createChessBoard(){    
