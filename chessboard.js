@@ -250,6 +250,9 @@ function isBlocked(strt_sqr, trgt_sqr){
         crnt_tuple[1] += direction_vector[1];
         crnt_square = getSquareByV(Squares, [crnt_tuple[0], crnt_tuple[1]]);
         console.log("debugging : " + crnt_square.name);
+        if(tuplesAreEqual(crnt_tuple, trgt)){
+            return false;
+        }
         if(crnt_square.repr.hasChildNodes()){
             return true;
         }
@@ -268,8 +271,6 @@ function tuplesAreEqual(strt, trgt){
     }
     return false;
 }
-
-
 
 /*
 isAttacking takes in target square
@@ -339,7 +340,6 @@ function createChessBoard(){
         var k = 0;
         var row = document.createElement('tr');
         for(var j = 1;  j < 9; j++){
-            //console.log(letters[k] + j);
             square = document.createElement('td');
             square.id = letters[k] + i;
             if((j+i) % 2 === 0){
@@ -354,17 +354,11 @@ function createChessBoard(){
                 });
                 Squares.push(square_object);
                 Board[[i],[j]] = square_object;
-                k += 1;
-               
+                k += 1;  
             }
-                //Rows[i].push(row);
                 board.appendChild(row);
                 
             }
-            /*
-            for(h = Rows.length; h > 0; h--){
-                        board.appendChild();
-            }*/
     document.body.appendChild(board);
 }
 
@@ -390,6 +384,10 @@ function movePiece(piece, target_square){
     target_square.appendChild(piece);
 }
 
+createChessBoard();
+setPieces();
+associateReprToPieces();
+
 /***********************************
   GAME
  ***************************************/
@@ -398,17 +396,12 @@ function movePiece(piece, target_square){
     This will be peeled off into a file called main.js
     The following lines are used to simulate actual gameplay
 */
-createChessBoard();
-setPieces();
-associateReprToPieces();
 
 document.addEventListener('click', function(e){
     if(e.target.classList.contains('piece')){
         var name = e.target.id;
         object_to_select = getObjectByID(Pieces, name);
         object_to_select.setIsSelected(true);
-        //console.log(object_to_select);
-       // console.log(Board[[7],[5]].name);
     }
     else{
             selected_piece = getObjectByIsSelected(Pieces);
@@ -424,15 +417,15 @@ document.addEventListener('click', function(e){
                         if(selected_piece.color !== attacked_piece.color){
                             attacked_piece.repr.remove();
                             e.target.appendChild(selected_piece.repr);
+                        }else{
+                            selected_piece.setIsSelected(false);
                         }
                     }
-                    e.target.appendChild(selected_piece.repr);
-                    selected_piece.setIsSelected(false);
+                    else{
+                        e.target.appendChild(selected_piece.repr);
+                        selected_piece.setIsSelected(false);
+                    }
                 }
-                // in the case where an illegal move is made always set isSelected to false
-                // regardless of the outcome
                 selected_piece.setIsSelected(false);
-                //movePiece(Pieces[i], e.target);
-            }//selected_piece.setIsSelected(false);
-        //movePiece(selected_piece, selected_piece.)
+            }
     }, false);
