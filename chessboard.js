@@ -79,6 +79,7 @@ class Queen extends Piece{
         return false;
     }
 }
+
 class Pawn extends Piece{
     constructor(name, color){
         super(color);
@@ -112,6 +113,22 @@ class Pawn extends Piece{
         return false;
     }
 }
+
+class Castle extends Piece{
+    constructor(name, color){
+        super(color);
+        this.name = name;
+    }
+    isLegalMove(strt_sqr, trgt_sqr){
+        // console.log(target_square_coordinates);
+        // console.log(piece_coordinates);
+        if((Math.abs(strt_sqr.x - trgt_sqr.x) == 0) || (Math.abs(trgt_sqr.y - strt_sqr.y) == 0)){
+                return true;
+            }
+            return false;
+        }
+    }
+            
 /*
 * SQUARE CLASS METHODS AND SUCH
 */
@@ -351,6 +368,7 @@ function setPieces(){
     e6 = document.getElementById('e6');
     d3 = document.getElementById('d3');
     f3 = document.getElementById('f3');
+    g8 = document.getElementById('g8');
 
     wht_queen = document.createElement('div');
     wht_queen2 = document.createElement('div');
@@ -358,6 +376,7 @@ function setPieces(){
     white_pawn = document.createElement('div');
     white_pawn2 = document.createElement('div');
     blck_king = document.createElement('div');
+    black_castle = document.createElement('div');
 
     blck_king.id = "black_king";
     black_pawn.id = "black_pawn";
@@ -366,24 +385,31 @@ function setPieces(){
     wht_queen.id = "white_queen";
     white_pawn.id = "white_pawn";
     white_pawn2.id = "white_pawn2";
+    black_castle.id = "black_castle";
 
-    black_pawn.className = "piece blackpawn";
+    
     wht_queen2.setAttribute("color", "white");
     white_pawn.setAttribute("color", "white");
     white_pawn2.setAttribute("color", "white");
     wht_queen.setAttribute("color", "white");
     black_pawn.setAttribute("color", "black");
+    blck_king.setAttribute("color", "black");
+    black_castle.setAttribute("color", "black");
+
+    black_pawn.className = "piece blackpawn";
     wht_queen.className = "piece whitequeen";
     wht_queen2.className = "piece whitequeen";
     white_pawn.className = "piece whitepawn";
     white_pawn2.className = "piece whitepawn";
-    blck_king.setAttribute("color", "black");
+    black_castle.className = "piece blackcastle";
+
     e7.appendChild(wht_queen);
     a6.appendChild(blck_king);
     e6.appendChild(wht_queen2);
     e2.appendChild(black_pawn);
     f3.appendChild(white_pawn2);
     d3.appendChild(white_pawn);
+    g7.appendChild(black_castle);
 }
 
 function associateReprToPieces(){
@@ -393,12 +419,15 @@ function associateReprToPieces(){
     white_queen = new Queen("white_queen", "white");
     white_queen2 = new Queen("white_queen2", "white");
     black_pawn  = new Pawn("black_pawn", "black");
+    black_castle = new Castle("black_castle", "black");
+
     black_king.setRepr(document.getElementById("black_king"));
     white_queen.setRepr(document.getElementById("white_queen"));
     white_queen2.setRepr(document.getElementById("white_queen2"));
     black_pawn.setRepr(document.getElementById("black_pawn"));
     white_pawn.setRepr(document.getElementById("white_pawn"));
     white_pawn2.setRepr(document.getElementById("white_pawn2"));
+    black_castle.setRepr(document.getElementById("black_castle"));
 
     Pieces.push(black_king);
     Pieces.push(white_queen);
@@ -406,6 +435,7 @@ function associateReprToPieces(){
     Pieces.push(black_pawn);
     Pieces.push(white_pawn);
     Pieces.push(white_pawn2);
+    Pieces.push(black_castle);
 }
 
 function createChessBoard(){    
