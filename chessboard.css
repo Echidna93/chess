@@ -32,8 +32,11 @@
 .blackpawn:before{
     content:"\265F";
 }
-.castle:before{
+.blackcastle:before{
     content:"\265C";
+}
+.whitecastle:after{
+    content:"\2656";
 }
 .whitebishop:before{
     content:"\2657";
