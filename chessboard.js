@@ -1,14 +1,10 @@
 // create chessboard
 // TODO: create stack of all moves played so that the moves can be "undone"
 // TODO: display all moves on expandable log on the side of the screen
-/* 
-TODO: create square class, squares will have an x and y component as well
-as a row signifier (i.e. a,b,c...h)
-*/
 
+// Board will hold the squares
 var Pieces = [];
 var Squares = [];
-// Board will hold the squares
 var Board = [[],[]];
 var Rows = [];
 
@@ -30,6 +26,16 @@ class Stack{
     }
 
 }
+/*
+ * PIECES CLASSES AND INHERITED CLASSES SECTION 
+ */
+
+
+// TODO: clean up all isLegalMove methods for piece classes
+// TODO: create numMoves attribute that tracks number of moves individual piece has taken
+
+
+
 
 class Piece{
     constructor(color){ 
@@ -94,13 +100,11 @@ class Pawn extends Piece{
             }
         else{
             if(this.color == "white"){
-                console.log('into the white');
                 if((Math.abs(trgt_sqr.x - strt_sqr.x) == 1)){
-                    console.log('here');
                     return true;
                 }
             }else{
-                if((Math.abs(trgt_sqr.x - strt_sqr.x) == 1) && ((trgt_sqr.y - strt_sqr) == -1)){
+                if((strt_sqr.y == trgt_sqr.y + 1) && (( trgt_sqr.x == strt_sqr.x - 1  )|| (trgt_sqr.x == strt_sqr.x + 1))){
                     return true;
                 }
             }
@@ -108,6 +112,11 @@ class Pawn extends Piece{
         return false;
     }
 }
+/*
+* SQUARE CLASS METHODS AND SUCH
+*/
+
+// TODO: figure out if there are classes square should be inheriting from, i.e. board, row column? to further simplify code
 
 class Square{
     constructor(x, y, name, repr){
@@ -340,8 +349,8 @@ function setPieces(){
     e2 = document.getElementById('e2');
     a6 = document.getElementById('a6');
     e6 = document.getElementById('e6');
-    d1 = document.getElementById('d1');
-    f1 = document.getElementById('f1');
+    d3 = document.getElementById('d3');
+    f3 = document.getElementById('f3');
 
     wht_queen = document.createElement('div');
     wht_queen2 = document.createElement('div');
@@ -373,8 +382,8 @@ function setPieces(){
     a6.appendChild(blck_king);
     e6.appendChild(wht_queen2);
     e2.appendChild(black_pawn);
-    f1.appendChild(white_pawn2);
-    d1.appendChild(white_pawn);
+    f3.appendChild(white_pawn2);
+    d3.appendChild(white_pawn);
 }
 
 function associateReprToPieces(){
