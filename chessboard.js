@@ -128,6 +128,36 @@ class Castle extends Piece{
             return false;
         }
     }
+
+class Knight extends Piece{
+    constructor(name, color){
+        super(color);
+        this.name = name;
+    }
+    isLegalMove(strt_sqr, trgt_sqr){
+        // console.log(target_square_coordinates);
+        // console.log(piece_coordinates);
+        if(((Math.abs(trgt_sqr.x - strt_sqr.x) == 2) && (Math.abs(trgt_sqr.y - strt_sqr.y) == 1)) || ((Math.abs(trgt_sqr.x - strt_sqr.x) == 1) && (Math.abs(trgt_sqr.y - strt_sqr.y) == 2))){
+            return true;
+        }
+        return false;
+    }
+}
+
+class Bishop extends Piece{
+    constructor(name, color){
+        super(color);
+        this.name = name;
+    }
+    isLegalMove(strt_sqr, trgt_sqr){
+        // console.log(target_square_coordinates);
+        // console.log(piece_coordinates);
+        if((Math.abs(trgt_sqr.y - strt_sqr.y) == Math.abs(trgt_sqr.y - strt_sqr.y))){
+            return true;
+        }
+        return false;
+    }
+}
             
 /*
 * SQUARE CLASS METHODS AND SUCH
@@ -285,9 +315,12 @@ function isLegalMove(piece, target_square){
 */
 
 
-function isBlocked(strt_sqr, trgt_sqr){
+function isBlocked(strt_sqr, trgt_sqr, selected_piece){
     // get direction vector tuple
     // only run this for non-knight piecies
+    if(selected_piece instanceof Knight){
+        return false;
+    }
     var direction_vector =  getDirectionVector(strt_sqr, trgt_sqr);
     console.log("direction vector: " + direction_vector);
     console.log("target square : " + trgt_sqr.name);
@@ -369,7 +402,11 @@ function setPieces(){
     d3 = document.getElementById('d3');
     f3 = document.getElementById('f3');
     g8 = document.getElementById('g8');
+    a2 = document.getElementById('a1');
+    a5 = document.getElementById('a5');
 
+    black_knight = document.createElement('div');
+    black_bishop = document.createElement('div');
     wht_queen = document.createElement('div');
     wht_queen2 = document.createElement('div');
     black_pawn = document.createElement('div');
@@ -378,6 +415,7 @@ function setPieces(){
     blck_king = document.createElement('div');
     black_castle = document.createElement('div');
 
+    black_bishop.id = "black_bishop";
     blck_king.id = "black_king";
     black_pawn.id = "black_pawn";
     blck_king.className = "piece blackking";
@@ -386,8 +424,9 @@ function setPieces(){
     white_pawn.id = "white_pawn";
     white_pawn2.id = "white_pawn2";
     black_castle.id = "black_castle";
-
+    black_knight.id = "black_knight";
     
+    black_bishop.setAttribute("color", "black");
     wht_queen2.setAttribute("color", "white");
     white_pawn.setAttribute("color", "white");
     white_pawn2.setAttribute("color", "white");
@@ -395,13 +434,16 @@ function setPieces(){
     black_pawn.setAttribute("color", "black");
     blck_king.setAttribute("color", "black");
     black_castle.setAttribute("color", "black");
+    black_knight.setAttribute("color", "black");
 
+    black_bishop.className = "piece blackbishop";
     black_pawn.className = "piece blackpawn";
     wht_queen.className = "piece whitequeen";
     wht_queen2.className = "piece whitequeen";
     white_pawn.className = "piece whitepawn";
     white_pawn2.className = "piece whitepawn";
     black_castle.className = "piece blackcastle";
+    black_knight.className = "piece blackknight";
 
     e7.appendChild(wht_queen);
     a6.appendChild(blck_king);
@@ -410,6 +452,8 @@ function setPieces(){
     f3.appendChild(white_pawn2);
     d3.appendChild(white_pawn);
     g7.appendChild(black_castle);
+    a2.appendChild(black_bishop);
+    a5.appendChild(black_knight);
 }
 
 function associateReprToPieces(){
@@ -420,7 +464,10 @@ function associateReprToPieces(){
     white_queen2 = new Queen("white_queen2", "white");
     black_pawn  = new Pawn("black_pawn", "black");
     black_castle = new Castle("black_castle", "black");
+    black_bishop = new Bishop("black_bishop", "black");
+    black_knight = new Knight("black_knight", "black");
 
+    black_bishop.setRepr(document.getElementById("black_bishop"));
     black_king.setRepr(document.getElementById("black_king"));
     white_queen.setRepr(document.getElementById("white_queen"));
     white_queen2.setRepr(document.getElementById("white_queen2"));
@@ -428,6 +475,7 @@ function associateReprToPieces(){
     white_pawn.setRepr(document.getElementById("white_pawn"));
     white_pawn2.setRepr(document.getElementById("white_pawn2"));
     black_castle.setRepr(document.getElementById("black_castle"));
+    black_knight.setRepr(document.getElementById("black_knight"));
 
     Pieces.push(black_king);
     Pieces.push(white_queen);
@@ -436,6 +484,8 @@ function associateReprToPieces(){
     Pieces.push(white_pawn);
     Pieces.push(white_pawn2);
     Pieces.push(black_castle);
+    Pieces.push(black_bishop);
+    Pieces.push(black_knight);
 }
 
 function createChessBoard(){    
@@ -515,7 +565,7 @@ document.addEventListener('click', function(e){
             //console.log(e.target.id);
             strt_sqr = getObjectByID(Squares, selected_piece.repr.parentElement.id);
             trgt_sqr = getObjectByID(Squares, e.target.id);
-            if(selected_piece.isLegalMove(strt_sqr, trgt_sqr) && !(isBlocked(strt_sqr, trgt_sqr))){          
+            if(selected_piece.isLegalMove(strt_sqr, trgt_sqr) && !(isBlocked(strt_sqr, trgt_sqr, selected_piece))){          
                     if(e.target.hasChildNodes()){
                         var attacked_piece = getObjectByID(Pieces, e.target.firstChild.id);
                         //console.log(attacked_piece);
