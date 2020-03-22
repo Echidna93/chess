@@ -42,6 +42,7 @@ class Piece{
         this.repr = null;
         this.is_selected = false;
         this.color = color;
+        this.nummoves = 0;
     }
     setRepr(repr){
         this.repr = repr;
@@ -51,6 +52,9 @@ class Piece{
         }
     getIsSelected(){
                 return this.is_selected;
+    }
+    increaseNumMoves(){
+        this.nummoves += 1;
     }
     //move(crrnt_square, trgt_square){}
 }
@@ -89,11 +93,17 @@ class Pawn extends Piece{
         console.log("this is the color of the piece " + this.color);
         if(!(isAttacking(trgt_sqr))){
             if(this.color == "white"){
-                if((strt_sqr.x == trgt_sqr.x) && ((trgt_sqr.y - strt_sqr.y) == 1)){
+                if((this.nummoves == 0) && ((strt_sqr.x == trgt_sqr.x) && (trgt_sqr.y - strt_sqr.y) == 2)){
+                    return true;
+                }
+                else if((strt_sqr.x == trgt_sqr.x) && ((trgt_sqr.y - strt_sqr.y) == 1)){
                     return true;
             }
         }
         else{
+            if((this.nummoves == 0) && ((strt_sqr.x == trgt_sqr.x) && (trgt_sqr.y - strt_sqr.y) == -2)){
+                return true;
+            }
                 if((strt_sqr.x == trgt_sqr.x) && ((trgt_sqr.y - strt_sqr.y) == -1)){
                     return true;
                     }
@@ -488,6 +498,7 @@ document.addEventListener('click', function(e){
                     else{
                         e.target.appendChild(selected_piece.repr);
                     }
+                    selected_piece.increaseNumMoves();
                 }
                 selected_piece.setIsSelected(false);
             }
