@@ -325,7 +325,103 @@ function setPiecesHelper(square_name, color, piece_type){
     square.appendChild(piece);
 }
 
-function setPieces(){
+function setPieces(square_to_piece_obj){
+    for(i = 0; i < square_to_piece_obj.length; i++){
+        setPiecesHelper(square_to_piece_obj[i].square, square_to_piece_obj[i].color, square_to_piece_obj[i].piece_type);
+    }
+}
+
+function associateReprToPieces(square_to_piece_obj){
+    for(i = 0; i < square_to_piece_obj.length; i++){
+        name = square_to_piece_obj[i].square + "_" + square_to_piece_obj[i].color + "_" + square_to_piece_obj[i].piece_type;
+        switch(square_to_piece_obj[i].piece_type){
+            case "pawn":
+                piece = new Pawn(name, square_to_piece_obj[i].color);
+                break;
+            case "castle":
+                piece = new Castle(name, square_to_piece_obj[i].color);
+                break;
+            case "knight":
+                piece = new Knight(name, square_to_piece_obj[i].color);
+                break;
+            case "bishop":
+                piece = new Bishop(name, square_to_piece_obj[i].color);
+                break;
+            case "queen":
+                piece = new Queen(name, square_to_piece_obj[i].color);
+                break; 
+            case "king":
+                piece = new King(name, square_to_piece_obj[i].color);
+                break;
+        }
+        piece.setRepr(document.getElementById(name));
+        Pieces.push(piece);
+    }
+
+    /*
+    white_pawn = new Pawn("white_pawn", "white");
+    white_pawn2 = new Pawn("white_pawn2", "white");
+    black_king = new King("black_king", "black");
+    white_queen = new Queen("white_queen", "white");
+    white_queen2 = new Queen("white_queen2", "white");
+    black_pawn  = new Pawn("black_pawn", "black");
+    black_castle = new Castle("black_castle", "black");
+    black_bishop = new Bishop("black_bishop", "black");
+    black_knight = new Knight("black_knight", "black");
+
+    black_bishop.setRepr(document.getElementById("black_bishop"));
+    black_king.setRepr(document.getElementById("black_king"));
+    white_queen.setRepr(document.getElementById("white_queen"));
+    white_queen2.setRepr(document.getElementById("white_queen2"));
+    black_pawn.setRepr(document.getElementById("black_pawn"));
+    white_pawn.setRepr(document.getElementById("white_pawn"));
+    white_pawn2.setRepr(document.getElementById("white_pawn2"));
+    black_castle.setRepr(document.getElementById("black_castle"));
+    black_knight.setRepr(document.getElementById("black_knight"));
+
+    Pieces.push(black_king);
+    Pieces.push(white_queen);
+    Pieces.push(white_queen2);
+    Pieces.push(black_pawn);
+    Pieces.push(white_pawn);
+    Pieces.push(white_pawn2);
+    Pieces.push(black_castle);
+    Pieces.push(black_bishop);
+    Pieces.push(black_knight);
+    */
+}
+
+function createChessBoard(){    
+    var board = document.createElement('table');
+    board.className = 'board';
+    for(var i = 8; i >= 1; i--){
+        var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        var k = 0;
+        var row = document.createElement('tr');
+        for(var j = 1;  j < 9; j++){
+            square = document.createElement('td');
+            square.id = letters[k] + i;
+            if((j+i) % 2 === 0){
+                square.className = "square blacksquare";
+            }else{
+                square.className = "square whitesquare";    
+            }
+                row.appendChild(square);
+                var square_object = new Square(j, i, letters[k] + (i), square);
+                square.addEventListener('click', function(){
+                    square_object.setIsSelected(true);
+                });
+                Squares.push(square_object);
+                Board[[i],[j]] = square_object;
+                k += 1;  
+            }
+                board.appendChild(row);
+                
+            }
+    document.body.appendChild(board);
+}
+
+function initializeGame(){
     var square_to_piece_obj = [
         {square: "a1", color: "white", piece_type: "castle"}, 
         {square: "b1", color: "white", piece_type: "knight"}, 
@@ -359,74 +455,10 @@ function setPieces(){
         {square: "f8", color: "black", piece_type: "bishop"},
         {square: "g8", color: "black", piece_type: "knight"},
         {square: "h8", color: "black", piece_type: "castle"},
-    ]
-    for(i = 0; i <square_to_piece_obj.length; i++){
-        setPiecesHelper(square_to_piece_obj[i].square, square_to_piece_obj[i].color, square_to_piece_obj[i].piece_type);
-    }
+    ];
+    setPieces(square_to_piece_obj);
+    associateReprToPieces(square_to_piece_obj);
 }
-
-function associateReprToPieces(){
-    white_pawn = new Pawn("white_pawn", "white");
-    white_pawn2 = new Pawn("white_pawn2", "white");
-    black_king = new King("black_king", "black");
-    white_queen = new Queen("white_queen", "white");
-    white_queen2 = new Queen("white_queen2", "white");
-    black_pawn  = new Pawn("black_pawn", "black");
-    black_castle = new Castle("black_castle", "black");
-    black_bishop = new Bishop("black_bishop", "black");
-    black_knight = new Knight("black_knight", "black");
-
-    black_bishop.setRepr(document.getElementById("black_bishop"));
-    black_king.setRepr(document.getElementById("black_king"));
-    white_queen.setRepr(document.getElementById("white_queen"));
-    white_queen2.setRepr(document.getElementById("white_queen2"));
-    black_pawn.setRepr(document.getElementById("black_pawn"));
-    white_pawn.setRepr(document.getElementById("white_pawn"));
-    white_pawn2.setRepr(document.getElementById("white_pawn2"));
-    black_castle.setRepr(document.getElementById("black_castle"));
-    black_knight.setRepr(document.getElementById("black_knight"));
-
-    Pieces.push(black_king);
-    Pieces.push(white_queen);
-    Pieces.push(white_queen2);
-    Pieces.push(black_pawn);
-    Pieces.push(white_pawn);
-    Pieces.push(white_pawn2);
-    Pieces.push(black_castle);
-    Pieces.push(black_bishop);
-    Pieces.push(black_knight);
-}
-
-function createChessBoard(){    
-    var board = document.createElement('table');
-    board.className = 'board';
-    for(var i = 8; i >= 1; i--){
-        var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-        var k = 0;
-        var row = document.createElement('tr');
-        for(var j = 1;  j < 9; j++){
-            square = document.createElement('td');
-            square.id = letters[k] + i;
-            if((j+i) % 2 === 0){
-                square.className = "square blacksquare";
-            }else{
-                square.className = "square whitesquare";    
-            }
-                row.appendChild(square);
-                var square_object = new Square(j, i, letters[k] + (i), square);
-                square.addEventListener('click', function(){
-                    square_object.setIsSelected(true);
-                });
-                Squares.push(square_object);
-                Board[[i],[j]] = square_object;
-                k += 1;  
-            }
-                board.appendChild(row);
-                
-            }
-    document.body.appendChild(board);
-}
-
 function getObjectByID(Objects, id){
     for(var i = 0; i < Objects.length; i++){
         if(Objects[i].name == id){
@@ -450,7 +482,8 @@ function movePiece(piece, target_square){
 }
 
 createChessBoard();
-setPieces();
+//setPieces();
+initializeGame();
 //associateReprToPieces();
 
 /***********************************
