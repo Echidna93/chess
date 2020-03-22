@@ -327,17 +327,17 @@ function setPiecesHelper(square_name, color, piece_type){
 
 function setPieces(){
     var square_to_piece_obj = [
-        { square: "a1", color: "white", piece_type: "castle" }, 
-        { square: "b1", color: "white", piece_type: "knight" }, 
-        { square: "c1", color: "white", piece_type: "bishop" },
-        { square: "d1", color: "white", piece_type: "queen" },
-        { square: "e1", color: "white", piece_type: "king" },
-        { square: "f1", color: "white", piece_type: "bishop" },
-        { square: "g1", color: "white", piece_type: "knight" },
-        { square: "h1", color: "white", piece_type: "castle" },
-        { square: "a2", color: "white", piece_type: "pawn" },
-        { square: "b2", color: "white", piece_type: "pawn" },
-        { square: "c2", color: "white", piece_type: "pawn" },
+        {square: "a1", color: "white", piece_type: "castle"}, 
+        {square: "b1", color: "white", piece_type: "knight"}, 
+        {square: "c1", color: "white", piece_type: "bishop"},
+        {square: "d1", color: "white", piece_type: "queen"},
+        {square: "e1", color: "white", piece_type: "king"},
+        {square: "f1", color: "white", piece_type: "bishop"},
+        {square: "g1", color: "white", piece_type: "knight"},
+        {square: "h1", color: "white", piece_type: "castle"},
+        {square: "a2", color: "white", piece_type: "pawn"},
+        {square: "b2", color: "white", piece_type: "pawn"},
+        {square: "c2", color: "white", piece_type: "pawn"},
         {square: "d2", color: "white", piece_type: "pawn"},
         {square: "e2", color: "white", piece_type: "pawn"},
         {square: "f2", color: "white", piece_type: "pawn"},
@@ -363,69 +363,6 @@ function setPieces(){
     for(i = 0; i <square_to_piece_obj.length; i++){
         setPiecesHelper(square_to_piece_obj[i].square, square_to_piece_obj[i].color, square_to_piece_obj[i].piece_type);
     }
-    /*e7 = document.getElementById('e7');
-     for(i = 0; i < intial_squares.length; i++){
-        intial_squares[i];
-    }*/
-    /*
-    e2 = document.getElementById('e2');
-    a6 = document.getElementById('a6');
-    e6 = document.getElementById('e6');
-    d3 = document.getElementById('d3');
-    f3 = document.getElementById('f3');
-    g8 = document.getElementById('g8');
-    //a2 = document.getElementById('a1');
-    a5 = document.getElementById('a5');
-
-    black_knight = document.createElement('div');
-    black_bishop = document.createElement('div');
-    wht_queen = document.createElement('div');
-    wht_queen2 = document.createElement('div');
-    black_pawn = document.createElement('div');
-    white_pawn = document.createElement('div');
-    white_pawn2 = document.createElement('div');
-    blck_king = document.createElement('div');
-    black_castle = document.createElement('div');
-
-    black_bishop.id = "black_bishop";
-    blck_king.id = "black_king";
-    black_pawn.id = "black_pawn";
-    blck_king.className = "piece blackking";
-    wht_queen2.id = "white_queen2";
-    wht_queen.id = "white_queen";
-    white_pawn.id = "white_pawn";
-    white_pawn2.id = "white_pawn2";
-    black_castle.id = "black_castle";
-    black_knight.id = "black_knight";
-    
-    black_bishop.setAttribute("color", "black");
-    wht_queen2.setAttribute("color", "white");
-    white_pawn.setAttribute("color", "white");
-    white_pawn2.setAttribute("color", "white");
-    wht_queen.setAttribute("color", "white");
-    black_pawn.setAttribute("color", "black");
-    blck_king.setAttribute("color", "black");
-    black_castle.setAttribute("color", "black");
-    black_knight.setAttribute("color", "black");
-
-    black_bishop.className = "piece blackbishop";
-    black_pawn.className = "piece blackpawn";
-    wht_queen.className = "piece whitequeen";
-    wht_queen2.className = "piece whitequeen";
-    white_pawn.className = "piece whitepawn";
-    white_pawn2.className = "piece whitepawn";
-    black_castle.className = "piece blackcastle";
-    black_knight.className = "piece blackknight";
-
-    e7.appendChild(wht_queen);
-    a6.appendChild(blck_king);
-    e6.appendChild(wht_queen2);
-    e2.appendChild(black_pawn);
-    f3.appendChild(white_pawn2);
-    d3.appendChild(white_pawn);
-    g7.appendChild(black_castle);
-    a2.appendChild(black_bishop);
-    a5.appendChild(black_knight);*/
 }
 
 function associateReprToPieces(){
