@@ -316,15 +316,65 @@ TODO: create loop to simulate creation of the pieces
 don't create every piece individually
 */
 
+function setPiecesHelper(square_name, color, piece_type){
+    var name = square_name + "_" + color +"_" + piece_type;
+    square = document.getElementById(square_name);
+    piece = document.createElement('div');
+    piece.id = name;
+    piece.className = "piece " + color + piece_type;
+    square.appendChild(piece);
+}
+
 function setPieces(){
-    e7 = document.getElementById('e7');
+    var square_to_piece_obj = [
+        { square: "a1", color: "white", piece_type: "castle" }, 
+        { square: "b1", color: "white", piece_type: "knight" }, 
+        { square: "c1", color: "white", piece_type: "bishop" },
+        { square: "d1", color: "white", piece_type: "queen" },
+        { square: "e1", color: "white", piece_type: "king" },
+        { square: "f1", color: "white", piece_type: "bishop" },
+        { square: "g1", color: "white", piece_type: "knight" },
+        { square: "h1", color: "white", piece_type: "castle" },
+        { square: "a2", color: "white", piece_type: "pawn" },
+        { square: "b2", color: "white", piece_type: "pawn" },
+        { square: "c2", color: "white", piece_type: "pawn" },
+        {square: "d2", color: "white", piece_type: "pawn"},
+        {square: "e2", color: "white", piece_type: "pawn"},
+        {square: "f2", color: "white", piece_type: "pawn"},
+        {square: "g2", color: "white", piece_type: "pawn"},
+        {square: "h2", color: "white", piece_type: "pawn"},
+        {square: "a7", color: "black", piece_type: "pawn"},
+        {square: "b7", color: "black", piece_type: "pawn"},
+        {square: "c7", color: "black", piece_type: "pawn"},
+        {square: "d7", color: "black", piece_type: "pawn"},
+        {square: "e7", color: "black", piece_type: "pawn"},
+        {square: "f7", color: "black", piece_type: "pawn"},
+        {square: "g7", color: "black", piece_type: "pawn"},
+        {square: "h7", color: "black", piece_type: "pawn"},
+        {square: "a8", color: "black", piece_type: "castle"},
+        {square: "b8", color: "black", piece_type: "knight"},
+        {square: "c8", color: "black", piece_type: "bishop"},
+        {square: "d8", color: "black", piece_type: "queen"},
+        {square: "e8", color: "black", piece_type: "king"},
+        {square: "f8", color: "black", piece_type: "bishop"},
+        {square: "g8", color: "black", piece_type: "knight"},
+        {square: "h8", color: "black", piece_type: "castle"},
+    ]
+    for(i = 0; i <square_to_piece_obj.length; i++){
+        setPiecesHelper(square_to_piece_obj[i].square, square_to_piece_obj[i].color, square_to_piece_obj[i].piece_type);
+    }
+    /*e7 = document.getElementById('e7');
+     for(i = 0; i < intial_squares.length; i++){
+        intial_squares[i];
+    }*/
+    /*
     e2 = document.getElementById('e2');
     a6 = document.getElementById('a6');
     e6 = document.getElementById('e6');
     d3 = document.getElementById('d3');
     f3 = document.getElementById('f3');
     g8 = document.getElementById('g8');
-    a2 = document.getElementById('a1');
+    //a2 = document.getElementById('a1');
     a5 = document.getElementById('a5');
 
     black_knight = document.createElement('div');
@@ -375,7 +425,7 @@ function setPieces(){
     d3.appendChild(white_pawn);
     g7.appendChild(black_castle);
     a2.appendChild(black_bishop);
-    a5.appendChild(black_knight);
+    a5.appendChild(black_knight);*/
 }
 
 function associateReprToPieces(){
@@ -464,7 +514,7 @@ function movePiece(piece, target_square){
 
 createChessBoard();
 setPieces();
-associateReprToPieces();
+//associateReprToPieces();
 
 /***********************************
   GAME
