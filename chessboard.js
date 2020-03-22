@@ -357,38 +357,6 @@ function associateReprToPieces(square_to_piece_obj){
         piece.setRepr(document.getElementById(name));
         Pieces.push(piece);
     }
-
-    /*
-    white_pawn = new Pawn("white_pawn", "white");
-    white_pawn2 = new Pawn("white_pawn2", "white");
-    black_king = new King("black_king", "black");
-    white_queen = new Queen("white_queen", "white");
-    white_queen2 = new Queen("white_queen2", "white");
-    black_pawn  = new Pawn("black_pawn", "black");
-    black_castle = new Castle("black_castle", "black");
-    black_bishop = new Bishop("black_bishop", "black");
-    black_knight = new Knight("black_knight", "black");
-
-    black_bishop.setRepr(document.getElementById("black_bishop"));
-    black_king.setRepr(document.getElementById("black_king"));
-    white_queen.setRepr(document.getElementById("white_queen"));
-    white_queen2.setRepr(document.getElementById("white_queen2"));
-    black_pawn.setRepr(document.getElementById("black_pawn"));
-    white_pawn.setRepr(document.getElementById("white_pawn"));
-    white_pawn2.setRepr(document.getElementById("white_pawn2"));
-    black_castle.setRepr(document.getElementById("black_castle"));
-    black_knight.setRepr(document.getElementById("black_knight"));
-
-    Pieces.push(black_king);
-    Pieces.push(white_queen);
-    Pieces.push(white_queen2);
-    Pieces.push(black_pawn);
-    Pieces.push(white_pawn);
-    Pieces.push(white_pawn2);
-    Pieces.push(black_castle);
-    Pieces.push(black_bishop);
-    Pieces.push(black_knight);
-    */
 }
 
 function createChessBoard(){    
